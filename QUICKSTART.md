@@ -2,38 +2,45 @@
 
 ## تشغيل المشروع في 5 خطوات
 
-### 1️⃣ تثبيت MongoDB
-تأكد من تشغيل MongoDB على جهازك أو استخدم MongoDB Atlas (cloud)
+### 1️⃣ إنشاء حساب Supabase (مجاني)
+1. افتح https://supabase.com
+2. سجل حساب جديد (مجاني 100%)
+3. اضغط **New Project**
+4. اختر اسم + password للمشروع
 
-### 2️⃣ Backend Setup
+### 2️⃣ إنشاء Database
+1. اذهب لـ **SQL Editor** في Supabase Dashboard
+2. انسخ كل محتويات `supabase/schema.sql`
+3. الصقه في SQL Editor واضغط **Run**
+4. سيتم إنشاء الجداول + البيانات الأولية تلقائياً ✅
+
+### 3️⃣ تثبيت وتشغيل المشروع
 ```bash
-cd backend
-npm install
-cp .env.example .env
-npm run seed    # يُنشئ البيانات الأولية + حساب الأدمن
-npm run dev     # سيعمل على http://localhost:5000
+npm install              # تثبيت المكتبات
+cp .env.example .env.local   # إنشاء ملف الإعدادات
+npm run dev              # تشغيل المشروع 🚀
 ```
 
-### 3️⃣ Frontend Setup
+### 4️⃣ ربط Supabase بالمشروع
+1. اذهب لـ **Settings > API** في Supabase
+2. انسخ `Project URL` و `anon public key`
+3. افتح `.env.local` والصقهم:
 ```bash
-cd frontend
-npm install
-cp .env.example .env.local
-npm run dev     # سيعمل على http://localhost:3000
+NEXT_PUBLIC_SUPABASE_URL=your-project-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 ```
 
-### 4️⃣ تسجيل الدخول للوحة التحكم
-- افتح: http://localhost:3000/admin/login
-- **Email**: `admin@apexbase.com`
-- **Password**: `Admin123!`
+### 5️⃣ إنشاء Admin User
+1. اذهب لـ **Authentication** في Supabase Dashboard
+2. اضغط **Add User**
+3. Email: `admin@apexbase.com`
+4. Password: `Admin123!` (أو أي password تريده)
+5. اضغط **Create User** ✅
 
-### 5️⃣ ابدأ التعديل!
 الآن يمكنك:
-- ✅ تعديل محتوى الصفحات من لوحة التحكم
-- ✅ إضافة/حذف/تعديل Services
-- ✅ إدارة Team Members
-- ✅ تغيير معلومات الاتصال
-- ✅ مشاهدة رسائل Contact Forms
+- ✅ فتح الموقع: http://localhost:3000
+- ✅ تسجيل دخول Admin: http://localhost:3000/admin/login
+- ✅ تعديل كل المحتوى من لوحة التحكم
 
 ---
 
