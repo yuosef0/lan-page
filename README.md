@@ -1,6 +1,6 @@
 # Apex & Base Construction Portfolio Website
 
-A full-stack portfolio website with an admin panel (CMS) for a construction company. Built with **Next.js**, **Express**, **MongoDB**, and **Tailwind CSS**.
+A full-stack portfolio website with an admin panel (CMS) for a construction company. Built with **Next.js**, **Supabase (PostgreSQL)**, and **Tailwind CSS**.
 
 ## 🎯 Features
 
@@ -14,7 +14,7 @@ A full-stack portfolio website with an admin panel (CMS) for a construction comp
 - ✅ SEO-friendly
 
 ### 🔐 Admin Panel (CMS)
-- ✅ Secure authentication with JWT
+- ✅ Secure authentication with Supabase Auth
 - ✅ Dashboard with statistics
 - ✅ Manage all page content:
   - Home page hero & feature cards
@@ -22,16 +22,16 @@ A full-stack portfolio website with an admin panel (CMS) for a construction comp
   - Services (add/edit/delete)
   - Team members (add/edit/delete)
   - Contact information & submissions
-- ✅ Image upload system
+- ✅ Image storage with Supabase Storage
 - ✅ User-friendly interface
 
-### 🔧 Backend API
-- ✅ RESTful API with Express.js
-- ✅ MongoDB database with Mongoose
-- ✅ JWT authentication
-- ✅ File upload with Multer
-- ✅ Full CRUD operations
-- ✅ Request validation
+### 🔧 Backend (Supabase)
+- ✅ PostgreSQL database (Supabase)
+- ✅ Row Level Security (RLS) policies
+- ✅ Real-time subscriptions
+- ✅ Supabase Auth for authentication
+- ✅ Supabase Storage for images
+- ✅ RESTful API auto-generated
 
 ---
 
@@ -39,42 +39,33 @@ A full-stack portfolio website with an admin panel (CMS) for a construction comp
 
 ```
 lan-page/
-├── backend/                # Express.js Backend API
-│   ├── config/            # Database configuration
-│   ├── controllers/       # Request handlers
-│   ├── middleware/        # Auth & upload middleware
-│   ├── models/            # Mongoose models
-│   ├── routes/            # API routes
-│   ├── uploads/           # Uploaded images
-│   ├── server.js          # Main server file
-│   ├── seed.js            # Database seed script
-│   └── package.json
+├── src/
+│   ├── app/              # Pages (Next.js 14 App Router)
+│   │   ├── page.tsx           # Home page
+│   │   ├── about/             # About page
+│   │   ├── services/          # Services page
+│   │   ├── contact/           # Contact page
+│   │   ├── admin/             # Admin panel
+│   │   │   ├── login/         # Admin login
+│   │   │   └── dashboard/     # Admin dashboard
+│   │   ├── globals.css        # Global styles
+│   │   └── layout.tsx         # Root layout
+│   ├── components/        # Reusable components
+│   │   ├── Header.tsx
+│   │   ├── Footer.tsx
+│   │   ├── ClientLayout.tsx
+│   │   └── admin/
+│   ├── lib/               # Utilities & helpers
+│   │   └── supabase.ts    # Supabase client
+│   └── types/             # TypeScript types
+│       └── database.ts    # Database types
 │
-├── frontend/              # Next.js Frontend
-│   ├── src/
-│   │   ├── app/          # Pages (Next.js 14 App Router)
-│   │   │   ├── page.tsx           # Home page
-│   │   │   ├── about/             # About page
-│   │   │   ├── services/          # Services page
-│   │   │   ├── contact/           # Contact page
-│   │   │   └── admin/             # Admin panel
-│   │   │       ├── login/         # Admin login
-│   │   │       ├── dashboard/     # Admin dashboard
-│   │   │       ├── home/          # Manage home page
-│   │   │       ├── services/      # Manage services
-│   │   │       └── ...            # Other admin pages
-│   │   ├── components/    # Reusable components
-│   │   │   ├── Header.tsx
-│   │   │   ├── Footer.tsx
-│   │   │   ├── ClientLayout.tsx
-│   │   │   └── admin/
-│   │   │       └── AdminLayout.tsx
-│   │   └── lib/           # API client & utilities
-│   │       └── api.ts
-│   ├── public/            # Static assets
-│   └── package.json
+├── supabase/
+│   └── schema.sql         # Database schema
 │
-└── README.md             # This file
+├── public/                # Static assets
+├── package.json
+└── README.md
 ```
 
 ---
@@ -83,7 +74,7 @@ lan-page/
 
 ### Prerequisites
 - Node.js (v18 or higher)
-- MongoDB (local or cloud instance)
+- Supabase Account (free tier available at https://supabase.com)
 - npm or yarn
 
 ### 1. Clone the Repository
@@ -92,57 +83,49 @@ git clone <repository-url>
 cd lan-page
 ```
 
-### 2. Backend Setup
+### 2. Setup Supabase
+
+1. Create a new project on https://supabase.com
+2. Go to **SQL Editor** and run the schema:
+   - Copy contents of `supabase/schema.sql`
+   - Paste and execute in SQL Editor
+3. Go to **Settings > API** to get your credentials
+
+### 3. Install Dependencies
 
 ```bash
-cd backend
-
-# Install dependencies
 npm install
-
-# Create .env file
-cp .env.example .env
-
-# Edit .env with your configuration
-# PORT=5000
-# MONGODB_URI=mongodb://localhost:27017/apex-base-portfolio
-# JWT_SECRET=your-super-secret-jwt-key
-# NODE_ENV=development
-
-# Seed the database (creates admin user & sample data)
-npm run seed
-
-# Start the backend server
-npm run dev
 ```
 
-**Default Admin Credentials:**
-- Email: `admin@apexbase.com`
-- Password: `Admin123!`
-
-### 3. Frontend Setup
+### 4. Environment Setup
 
 ```bash
-cd ../frontend
-
-# Install dependencies
-npm install
-
 # Create .env.local file
 cp .env.example .env.local
 
-# Edit .env.local
-# NEXT_PUBLIC_API_URL=http://localhost:5000/api
+# Edit .env.local with your Supabase credentials
+# NEXT_PUBLIC_SUPABASE_URL=your-project-url
+# NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+# SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+```
 
-# Start the development server
+### 5. Create Admin User
+
+Go to Supabase Dashboard → **Authentication** → **Add User**:
+- Email: `admin@apexbase.com`
+- Password: `Admin123!` (or your choice)
+
+### 6. Run the Application
+
+```bash
 npm run dev
 ```
 
-### 4. Access the Application
+### 7. Access the Application
 
 - **Portfolio Website**: http://localhost:3000
 - **Admin Panel**: http://localhost:3000/admin/login
-- **Backend API**: http://localhost:5000/api
+- **Supabase Dashboard**: Your Supabase project URL
 
 ---
 
@@ -297,30 +280,26 @@ All content is managed through:
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: Next.js 14, React 18, TypeScript, Tailwind CSS
-- **Backend**: Node.js, Express.js, MongoDB, Mongoose
-- **Authentication**: JWT (jsonwebtoken)
-- **File Upload**: Multer
-- **UI Components**: Material Symbols Icons
-- **Notifications**: React Toastify
+- **Framework**: Next.js 14 (App Router)
+- **Frontend**: React 18, TypeScript, Tailwind CSS
+- **Backend**: Supabase (PostgreSQL)
+- **Authentication**: Supabase Auth
+- **Storage**: Supabase Storage
+- **Real-time**: Supabase Realtime
+- **UI Icons**: Material Symbols
 
 ---
 
 ## 📝 Scripts
 
-### Backend
-```bash
-npm run dev      # Start development server with nodemon
-npm start        # Start production server
-npm run seed     # Seed database with initial data
-```
-
-### Frontend
 ```bash
 npm run dev      # Start development server
 npm run build    # Build for production
 npm start        # Start production server
+npm run lint     # Run ESLint
 ```
+
+**Note**: Database seeding is done via SQL (see `supabase/schema.sql`)
 
 ---
 
