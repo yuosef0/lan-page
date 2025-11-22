@@ -8,19 +8,40 @@ export default function AdminLogin() {
   const router = useRouter();
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setError('');
 
-    const { error } = await supabase.auth.signInWithPassword(formData);
+    try {
+      console.log('Attempting login with:', formData.email);
+      console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL);
 
-    if (error) {
-      alert(error.message);
-    } else {
-      router.push('/admin/dashboard');
+      const { data, error: authError } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      console.log('Login response:', { data, error: authError });
+
+      if (authError) {
+        console.error('Login error:', authError);
+        setError(authError.message);
+      } else if (data.session) {
+        console.log('Login successful!');
+        router.push('/admin/dashboard');
+        router.refresh();
+      } else {
+        setError('Login failed - no session returned');
+      }
+    } catch (err) {
+      console.error('Unexpected error:', err);
+      setError(`An unexpected error occurred: ${err}`);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
@@ -30,6 +51,13 @@ export default function AdminLogin() {
           <span className="text-3xl font-black">AB</span>
         </div>
         <h2 className="text-center text-3xl font-extrabold mb-6">Admin Login</h2>
+
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+            <strong className="font-bold">Error: </strong>
+            <span className="block sm:inline">{error}</span>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <input
