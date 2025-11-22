@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
+import Toast from '@/components/admin/Toast';
 import { supabase } from '@/lib/supabase';
 
 interface ContactSubmission {
@@ -20,6 +21,7 @@ export default function SubmissionsAdmin() {
   const [submissions, setSubmissions] = useState<ContactSubmission[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'general' | 'vendor'>('all');
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   useEffect(() => {
     fetchData();
