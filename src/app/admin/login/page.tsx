@@ -16,38 +16,21 @@ export default function AdminLogin() {
     setError('');
 
     try {
-      console.log('Attempting login with:', formData.email);
-      console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL);
-
       const { data, error: authError } = await supabase.auth.signInWithPassword({
         email: formData.email,
         password: formData.password,
       });
 
-      console.log('Login response:', { data, error: authError });
-
       if (authError) {
-        console.error('Login error:', authError);
         setError(authError.message);
+        setLoading(false);
       } else if (data.session) {
-        console.log('Login successful! Session:', data.session);
-
-        // Wait a bit for the session to be stored in localStorage
-        await new Promise(resolve => setTimeout(resolve, 500));
-
-        // Verify session is stored
-        const { data: { session } } = await supabase.auth.getSession();
-        console.log('Session after storage:', session);
-
-        if (session) {
-          console.log('Redirecting to dashboard...');
-          window.location.href = '/admin/dashboard';
-        } else {
-          setError('Session was not stored properly. Please try again.');
-          setLoading(false);
-        }
+        console.log('Login successful!');
+        // Redirect using Next.js router for proper navigation
+        router.push('/admin/dashboard');
       } else {
         setError('Login failed - no session returned');
+        setLoading(false);
       }
     } catch (err) {
       console.error('Unexpected error:', err);
