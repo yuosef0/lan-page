@@ -12,6 +12,8 @@ const navItems = [
   { href: '/admin/services', label: 'Services', icon: 'construction' },
   { href: '/admin/team', label: 'Team Members', icon: 'group' },
   { href: '/admin/contact', label: 'Contact Info', icon: 'contact_mail' },
+  { href: '/admin/footer', label: 'Footer Settings', icon: 'web' },
+  { href: '/admin/settings', label: 'Site Settings', icon: 'settings' },
   { href: '/admin/submissions', label: 'Submissions', icon: 'inbox' },
 ];
 
