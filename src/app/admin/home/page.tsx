@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
 import ImageUpload from '@/components/admin/ImageUpload';
+import Toast from '@/components/admin/Toast';
 import { supabase } from '@/lib/supabase';
 import type { HomePage, FeatureCard } from '@/types/database';
 
@@ -14,6 +15,7 @@ export default function HomeAdmin() {
   const [editingCard, setEditingCard] = useState<FeatureCard | null>(null);
   const [isAddingCard, setIsAddingCard] = useState(false);
   const [cardImageUrl, setCardImageUrl] = useState('');
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   useEffect(() => {
     fetchData();
@@ -46,10 +48,10 @@ export default function HomeAdmin() {
       .eq('id', homeData.id);
 
     if (!error) {
-      alert('Hero section updated successfully!');
+      setToast({ message: 'تم تحديث صفحة Home بنجاح!', type: 'success' });
       fetchData();
     } else {
-      alert('Error updating hero section');
+      setToast({ message: 'خطأ في التحديث', type: 'error' });
     }
     setSaving(false);
   };
@@ -76,14 +78,14 @@ export default function HomeAdmin() {
     }
 
     if (!error) {
-      alert(editingCard ? 'Card updated successfully!' : 'Card added successfully!');
+      setToast({ message: editingCard ? 'تم تحديث الكارد بنجاح!' : 'تم إضافة الكارد بنجاح!', type: 'success' });
       setEditingCard(null);
       setIsAddingCard(false);
       setCardImageUrl('');
       fetchData();
     } else {
       console.error('Error saving card:', error);
-      alert('Error saving card: ' + error.message);
+      setToast({ message: 'خطأ في حفظ الكارد: ' + error.message, type: 'error' });
     }
     setSaving(false);
   };
@@ -94,10 +96,10 @@ export default function HomeAdmin() {
     const { error } = await supabase.from('feature_cards').delete().eq('id', id);
 
     if (!error) {
-      alert('Card deleted successfully!');
+      setToast({ message: 'تم حذف الكارد بنجاح!', type: 'success' });
       fetchData();
     } else {
-      alert('Error deleting card');
+      setToast({ message: 'خطأ في حذف الكارد', type: 'error' });
     }
   };
 
@@ -224,6 +226,8 @@ export default function HomeAdmin() {
                     currentImage={cardImageUrl || editingCard?.image}
                     onImageUploaded={setCardImageUrl}
                     folder="home"
+                    onSuccess={(msg) => setToast({ message: msg, type: 'success' })}
+                    onError={(msg) => setToast({ message: msg, type: 'error' })}
                   />
                   <p className="text-xs text-gray-500 mt-2">أو أدخل رابط الصورة:</p>
                   <input
@@ -269,6 +273,13 @@ export default function HomeAdmin() {
           </div>
         )}
       </div>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
     </AdminLayout>
   );
 }
