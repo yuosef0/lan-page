@@ -44,13 +44,13 @@ export default function AboutAdmin() {
       .update({
         hero_title: formData.get('hero_title') as string,
         hero_subtitle: formData.get('hero_subtitle') as string,
-        hero_image: heroImageUrl || formData.get('hero_image') as string,
+        hero_image: heroImageUrl || (formData.get('hero_image') as string) || aboutPage.hero_image,
         mission_title: formData.get('mission_title') as string,
         mission_content: formData.get('mission_content') as string,
-        mission_image: missionImageUrl || formData.get('mission_image') as string,
+        mission_image: missionImageUrl || (formData.get('mission_image') as string) || aboutPage.mission_image,
         values_title: formData.get('values_title') as string,
         values_content: formData.get('values_content') as string,
-        values_image: valuesImageUrl || formData.get('values_image') as string,
+        values_image: valuesImageUrl || (formData.get('values_image') as string) || aboutPage.values_image,
         principles_section_title: formData.get('principles_section_title') as string,
       })
       .eq('id', aboutPage.id);
@@ -62,7 +62,8 @@ export default function AboutAdmin() {
       setValuesImageUrl('');
       fetchData();
     } else {
-      alert('Error updating about page');
+      console.error('Error updating about page:', error);
+      alert('Error updating about page: ' + error.message);
     }
     setSaving(false);
   };

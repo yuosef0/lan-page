@@ -32,7 +32,7 @@ export default function TeamAdmin() {
     const memberData = {
       name: formData.get('name') as string,
       position: formData.get('position') as string,
-      image: memberImageUrl || formData.get('image') as string,
+      image: memberImageUrl || (formData.get('image') as string) || editingMember?.image || '',
       bio: formData.get('bio') as string,
       order: parseInt(formData.get('order') as string),
     };
@@ -53,7 +53,8 @@ export default function TeamAdmin() {
       setMemberImageUrl('');
       fetchData();
     } else {
-      alert('Error saving team member');
+      console.error('Error saving team member:', error);
+      alert('Error saving team member: ' + error.message);
     }
     setSaving(false);
   };
