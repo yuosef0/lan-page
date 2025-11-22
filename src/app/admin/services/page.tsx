@@ -16,6 +16,7 @@ export default function ServicesAdmin() {
   const [isAddingService, setIsAddingService] = useState(false);
   const [heroImageUrl, setHeroImageUrl] = useState('');
   const [serviceImageUrl, setServiceImageUrl] = useState('');
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   useEffect(() => {
     fetchData();
@@ -49,12 +50,12 @@ export default function ServicesAdmin() {
       .eq('id', servicesPage.id);
 
     if (!error) {
-      alert('Hero section updated successfully!');
+      setToast({ message: 'تم تحديث قسم البطل بنجاح!', type: 'success' });
       setHeroImageUrl('');
       fetchData();
     } else {
       console.error('Error updating hero section:', error);
-      alert('Error updating hero section: ' + error.message);
+      setToast({ message: 'خطأ في تحديث قسم البطل: ' + error.message, type: 'error' });
     }
     setSaving(false);
   };
@@ -90,7 +91,7 @@ export default function ServicesAdmin() {
       fetchData();
     } else {
       console.error('Error saving service:', error);
-      alert('Error saving service: ' + error.message);
+      setToast({ message: 'خطأ في حفظ الخدمة: ' + error.message, type: 'error' });
     }
     setSaving(false);
   };

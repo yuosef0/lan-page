@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
+import Toast from '@/components/admin/Toast';
 import { supabase } from '@/lib/supabase';
 import type { ContactInfo } from '@/types/database';
 
@@ -9,6 +10,7 @@ export default function ContactAdmin() {
   const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   useEffect(() => {
     fetchData();
@@ -61,10 +63,10 @@ export default function ContactAdmin() {
       .eq('id', contactInfo.id);
 
     if (!error) {
-      alert('Contact info updated successfully!');
+      setToast({ message: 'تم تحديث معلومات الاتصال بنجاح!', type: 'success' });
       fetchData();
     } else {
-      alert('Error updating contact info');
+      setToast({ message: 'خطأ في تحديث معلومات الاتصال', type: 'error' });
     }
     setSaving(false);
   };
