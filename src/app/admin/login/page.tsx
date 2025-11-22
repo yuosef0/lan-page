@@ -1,11 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 
 export default function AdminLogin() {
-  const router = useRouter();
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -17,7 +15,6 @@ export default function AdminLogin() {
 
     try {
       console.log('Attempting login with:', formData.email);
-      console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL);
 
       const { data, error: authError } = await supabase.auth.signInWithPassword({
         email: formData.email,
@@ -29,25 +26,20 @@ export default function AdminLogin() {
       if (authError) {
         console.error('Login error:', authError);
         setError(authError.message);
+        setLoading(false);
       } else if (data.session) {
         console.log('Login successful! Session:', data.session);
 
-        // Wait a bit for the session to be stored in localStorage
-        await new Promise(resolve => setTimeout(resolve, 500));
+        // Store session info and redirect using window.location for full page reload
+        // This ensures middleware can read the session
+        console.log('Redirecting to dashboard...');
 
-        // Verify session is stored
-        const { data: { session } } = await supabase.auth.getSession();
-        console.log('Session after storage:', session);
-
-        if (session) {
-          console.log('Redirecting to dashboard...');
-          window.location.href = '/admin/dashboard';
-        } else {
-          setError('Session was not stored properly. Please try again.');
-          setLoading(false);
-        }
+        // Force a hard reload to ensure middleware picks up the session
+        window.location.href = '/admin/dashboard';
+        // Don't set loading to false - we're redirecting
       } else {
         setError('Login failed - no session returned');
+        setLoading(false);
       }
     } catch (err) {
       console.error('Unexpected error:', err);
@@ -72,34 +64,45 @@ export default function AdminLogin() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <input
-            type="email"
-            required
-            value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            className="w-full px-4 py-3 border rounded-lg"
-            placeholder="Email"
-          />
-          <input
-            type="password"
-            required
-            value={formData.password}
-            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-            className="w-full px-4 py-3 border rounded-lg"
-            placeholder="Password"
-          />
+          <div>
+            <label className="block text-sm font-medium mb-2">Email</label>
+            <input
+              type="email"
+              required
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              placeholder="admin@apexbase.com"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-2">Password</label>
+            <input
+              type="password"
+              required
+              value={formData.password}
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              placeholder="Enter your password"
+            />
+          </div>
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary text-white py-3 rounded-lg font-medium"
+            className="w-full bg-primary text-white py-3 rounded-lg font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? 'Signing in...' : 'Sign in'}
           </button>
         </form>
 
-        <p className="text-center text-sm text-gray-500 mt-4">
-          Use your Supabase Auth credentials
-        </p>
+        <div className="mt-6 text-center">
+          <p className="text-sm text-gray-500">
+            Use your Supabase admin credentials
+          </p>
+          <p className="text-xs text-gray-400 mt-2">
+            Check browser console (F12) for debug info
+          </p>
+        </div>
       </div>
     </div>
   );
