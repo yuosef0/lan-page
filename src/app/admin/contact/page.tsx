@@ -20,12 +20,32 @@ export default function ContactAdmin() {
     setLoading(false);
   };
 
+  // Extract src URL from iframe HTML if needed
+  const extractMapUrl = (input: string): string => {
+    if (!input) return '';
+
+    // If it's already a URL, return it
+    if (input.startsWith('http')) return input;
+
+    // Try to extract src from iframe HTML
+    const srcMatch = input.match(/src=["']([^"']+)["']/);
+    if (srcMatch && srcMatch[1]) {
+      return srcMatch[1];
+    }
+
+    return input;
+  };
+
   const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!contactInfo) return;
 
     setSaving(true);
     const formData = new FormData(e.currentTarget);
+
+    // Extract map URL from iframe code if necessary
+    const mapInput = formData.get('office_map_embed_url') as string;
+    const mapUrl = extractMapUrl(mapInput);
 
     const { error } = await supabase
       .from('contact_info')
@@ -36,7 +56,7 @@ export default function ContactAdmin() {
         office_address: formData.get('office_address') as string,
         office_phone: formData.get('office_phone') as string,
         office_email: formData.get('office_email') as string,
-        office_map_embed_url: formData.get('office_map_embed_url') as string,
+        office_map_embed_url: mapUrl,
       })
       .eq('id', contactInfo.id);
 
@@ -143,16 +163,23 @@ export default function ContactAdmin() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-2">Google Maps Embed URL</label>
-                  <input
-                    type="url"
+                  <textarea
                     name="office_map_embed_url"
                     defaultValue={contactInfo?.office_map_embed_url || ''}
-                    placeholder="https://www.google.com/maps/embed?pb=..."
-                    className="w-full px-4 py-2 border rounded-lg"
+                    placeholder="Paste the full iframe code or just the URL"
+                    rows={3}
+                    className="w-full px-4 py-2 border rounded-lg font-mono text-sm"
                   />
-                  <p className="text-xs text-gray-500 mt-1">
-                    Go to Google Maps → Share → Embed a map → Copy the src URL
-                  </p>
+                  <div className="text-xs text-gray-600 mt-2 space-y-1 bg-gray-50 p-3 rounded">
+                    <p className="font-medium">📍 كيفية إضافة الخريطة:</p>
+                    <ol className="list-decimal list-inside space-y-1 mr-4">
+                      <li>افتح Google Maps وابحث عن موقعك</li>
+                      <li>اضغط على "مشاركة" أو "Share"</li>
+                      <li>اختر "تضمين خريطة" أو "Embed a map"</li>
+                      <li>انسخ الكود كله والصقه هنا (أو انسخ الرابط من src فقط)</li>
+                    </ol>
+                    <p className="text-green-600 mt-2">✓ يمكنك لصق الكود كامل، سيتم استخراج الرابط تلقائياً</p>
+                  </div>
                 </div>
               </div>
             </div>

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
+import ImageUpload from '@/components/admin/ImageUpload';
 import { supabase } from '@/lib/supabase';
 import type { TeamMember } from '@/types/database';
 
@@ -11,6 +12,7 @@ export default function TeamAdmin() {
   const [saving, setSaving] = useState(false);
   const [editingMember, setEditingMember] = useState<TeamMember | null>(null);
   const [isAddingMember, setIsAddingMember] = useState(false);
+  const [memberImageUrl, setMemberImageUrl] = useState('');
 
   useEffect(() => {
     fetchData();
@@ -30,7 +32,7 @@ export default function TeamAdmin() {
     const memberData = {
       name: formData.get('name') as string,
       position: formData.get('position') as string,
-      image: formData.get('image') as string,
+      image: memberImageUrl || formData.get('image') as string,
       bio: formData.get('bio') as string,
       order: parseInt(formData.get('order') as string),
     };
@@ -48,6 +50,7 @@ export default function TeamAdmin() {
       alert(editingMember ? 'Team member updated successfully!' : 'Team member added successfully!');
       setEditingMember(null);
       setIsAddingMember(false);
+      setMemberImageUrl('');
       fetchData();
     } else {
       alert('Error saving team member');
@@ -158,13 +161,19 @@ export default function TeamAdmin() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">Image URL</label>
+                  <label className="block text-sm font-medium mb-2">Member Image</label>
+                  <ImageUpload
+                    currentImage={memberImageUrl || editingMember?.image}
+                    onImageUploaded={setMemberImageUrl}
+                    folder="team"
+                  />
+                  <p className="text-xs text-gray-500 mt-2">أو أدخل رابط الصورة:</p>
                   <input
                     type="url"
                     name="image"
                     defaultValue={editingMember?.image}
-                    required
-                    className="w-full px-4 py-2 border rounded-lg"
+                    placeholder="https://example.com/image.jpg"
+                    className="w-full px-4 py-2 border rounded-lg mt-1"
                   />
                 </div>
                 <div>
