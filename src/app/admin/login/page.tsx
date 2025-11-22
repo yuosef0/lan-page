@@ -31,8 +31,8 @@ export default function AdminLogin() {
         setError(authError.message);
       } else if (data.session) {
         console.log('Login successful!');
-        router.push('/admin/dashboard');
-        router.refresh();
+        // Use window.location for full page reload to ensure cookies are set
+        window.location.href = '/admin/dashboard';
       } else {
         setError('Login failed - no session returned');
       }
