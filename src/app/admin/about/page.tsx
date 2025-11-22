@@ -166,13 +166,16 @@ export default function AboutAdmin() {
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-bold">Mission Section</h3>
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    name="show_mission"
-                    defaultChecked={aboutPage?.show_mission !== false}
-                    className="w-4 h-4 text-primary rounded"
-                  />
                   <span className="text-sm font-medium">عرض في الموقع</span>
+                  <div className="relative inline-block">
+                    <input
+                      type="checkbox"
+                      name="show_mission"
+                      defaultChecked={aboutPage?.show_mission !== false}
+                      className="sr-only peer"
+                    />
+                    <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                  </div>
                 </label>
               </div>
               <div className="space-y-4">
@@ -220,13 +223,16 @@ export default function AboutAdmin() {
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-bold">Values Section</h3>
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    name="show_values"
-                    defaultChecked={aboutPage?.show_values !== false}
-                    className="w-4 h-4 text-primary rounded"
-                  />
                   <span className="text-sm font-medium">عرض في الموقع</span>
+                  <div className="relative inline-block">
+                    <input
+                      type="checkbox"
+                      name="show_values"
+                      defaultChecked={aboutPage?.show_values !== false}
+                      className="sr-only peer"
+                    />
+                    <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                  </div>
                 </label>
               </div>
               <div className="space-y-4">
@@ -258,13 +264,16 @@ export default function AboutAdmin() {
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-bold">Principles Section</h3>
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    name="show_principles"
-                    defaultChecked={aboutPage?.show_principles !== false}
-                    className="w-4 h-4 text-primary rounded"
-                  />
                   <span className="text-sm font-medium">عرض في الموقع</span>
+                  <div className="relative inline-block">
+                    <input
+                      type="checkbox"
+                      name="show_principles"
+                      defaultChecked={aboutPage?.show_principles !== false}
+                      className="sr-only peer"
+                    />
+                    <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                  </div>
                 </label>
               </div>
               <div>
@@ -284,13 +293,16 @@ export default function AboutAdmin() {
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-bold">Team Section</h3>
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    name="show_team"
-                    defaultChecked={aboutPage?.show_team !== false}
-                    className="w-4 h-4 text-primary rounded"
-                  />
                   <span className="text-sm font-medium">عرض في الموقع</span>
+                  <div className="relative inline-block">
+                    <input
+                      type="checkbox"
+                      name="show_team"
+                      defaultChecked={aboutPage?.show_team !== false}
+                      className="sr-only peer"
+                    />
+                    <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                  </div>
                 </label>
               </div>
               <div>
