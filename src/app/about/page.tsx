@@ -55,41 +55,35 @@ export default function About() {
       </section>
 
       {/* Mission & Values */}
-      {(aboutData?.show_mission || aboutData?.show_values) && (
-        <section className="py-16 md:py-24 bg-white dark:bg-zinc-900">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-16">
-              <div className="space-y-8">
-                {aboutData?.show_mission && (
-                  <div>
-                    <h2 className="text-[22px] font-bold">{aboutData?.mission_title}</h2>
-                    <p className="mt-2 text-base leading-relaxed">{aboutData?.mission_content}</p>
-                  </div>
-                )}
-                {aboutData?.show_values && (
-                  <div>
-                    <h2 className="text-[22px] font-bold">{aboutData?.values_title}</h2>
-                    <p className="mt-2 text-base leading-relaxed">{aboutData?.values_content}</p>
-                  </div>
-                )}
+      <section className="py-16 md:py-24 bg-white dark:bg-zinc-900">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-16">
+            <div className="space-y-8">
+              <div>
+                <h2 className="text-[22px] font-bold">{aboutData?.mission_title}</h2>
+                <p className="mt-2 text-base leading-relaxed">{aboutData?.mission_content}</p>
               </div>
-              {aboutData?.mission_image && (
-                <div className="relative h-[400px] md:h-[500px]">
-                  <Image
-                    src={aboutData.mission_image}
-                    alt="Our team"
-                    fill
-                    className="rounded-lg object-cover shadow-lg"
-                  />
-                </div>
-              )}
+              <div>
+                <h2 className="text-[22px] font-bold">{aboutData?.values_title}</h2>
+                <p className="mt-2 text-base leading-relaxed">{aboutData?.values_content}</p>
+              </div>
             </div>
+            {aboutData?.mission_image && (
+              <div className="relative h-[400px] md:h-[500px]">
+                <Image
+                  src={aboutData.mission_image}
+                  alt="Our team"
+                  fill
+                  className="rounded-lg object-cover shadow-lg"
+                />
+              </div>
+            )}
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
       {/* Principles */}
-      {aboutData?.show_principles && principles.length > 0 && (
+      {principles.length > 0 && (
         <section className="py-16 md:py-24 bg-background-light dark:bg-background-dark">
           <div className="container mx-auto px-4">
             <div className="mx-auto max-w-3xl text-center">
@@ -112,7 +106,7 @@ export default function About() {
       )}
 
       {/* Team */}
-      {aboutData?.show_team && teamMembers.length > 0 && (
+      {teamMembers.length > 0 && (
         <section className="py-16 md:py-24 bg-white dark:bg-zinc-900">
           <div className="container mx-auto px-4">
             <div className="mx-auto max-w-3xl text-center">
