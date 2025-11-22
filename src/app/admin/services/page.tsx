@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
+import ImageUpload from '@/components/admin/ImageUpload';
 import { supabase } from '@/lib/supabase';
 import type { ServicesPage, Service } from '@/types/database';
 
@@ -12,6 +13,8 @@ export default function ServicesAdmin() {
   const [saving, setSaving] = useState(false);
   const [editingService, setEditingService] = useState<Service | null>(null);
   const [isAddingService, setIsAddingService] = useState(false);
+  const [heroImageUrl, setHeroImageUrl] = useState('');
+  const [serviceImageUrl, setServiceImageUrl] = useState('');
 
   useEffect(() => {
     fetchData();
@@ -40,12 +43,13 @@ export default function ServicesAdmin() {
       .update({
         hero_title: formData.get('hero_title') as string,
         hero_subtitle: formData.get('hero_subtitle') as string,
-        hero_image: formData.get('hero_image') as string,
+        hero_image: heroImageUrl || formData.get('hero_image') as string,
       })
       .eq('id', servicesPage.id);
 
     if (!error) {
       alert('Hero section updated successfully!');
+      setHeroImageUrl('');
       fetchData();
     } else {
       alert('Error updating hero section');
@@ -61,7 +65,7 @@ export default function ServicesAdmin() {
     const serviceData = {
       title: formData.get('title') as string,
       description: formData.get('description') as string,
-      image: formData.get('image') as string,
+      image: serviceImageUrl || formData.get('image') as string,
       image_position: formData.get('image_position') as 'left' | 'right',
       order: parseInt(formData.get('order') as string),
       is_active: formData.get('is_active') === 'true',
@@ -80,6 +84,7 @@ export default function ServicesAdmin() {
       alert(editingService ? 'Service updated successfully!' : 'Service added successfully!');
       setEditingService(null);
       setIsAddingService(false);
+      setServiceImageUrl('');
       fetchData();
     } else {
       alert('Error saving service');
@@ -154,12 +159,19 @@ export default function ServicesAdmin() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2">Hero Image URL</label>
+              <label className="block text-sm font-medium mb-2">Hero Image</label>
+              <ImageUpload
+                currentImage={heroImageUrl || servicesPage?.hero_image}
+                onImageUploaded={setHeroImageUrl}
+                folder="services"
+              />
+              <p className="text-xs text-gray-500 mt-2">أو أدخل رابط الصورة:</p>
               <input
                 type="url"
                 name="hero_image"
                 defaultValue={servicesPage?.hero_image || ''}
-                className="w-full px-4 py-2 border rounded-lg"
+                placeholder="https://example.com/image.jpg"
+                className="w-full px-4 py-2 border rounded-lg mt-1"
               />
             </div>
             <button
@@ -259,13 +271,19 @@ export default function ServicesAdmin() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">Image URL</label>
+                  <label className="block text-sm font-medium mb-2">Service Image</label>
+                  <ImageUpload
+                    currentImage={serviceImageUrl || editingService?.image}
+                    onImageUploaded={setServiceImageUrl}
+                    folder="services"
+                  />
+                  <p className="text-xs text-gray-500 mt-2">أو أدخل رابط الصورة:</p>
                   <input
                     type="url"
                     name="image"
                     defaultValue={editingService?.image}
-                    required
-                    className="w-full px-4 py-2 border rounded-lg"
+                    placeholder="https://example.com/image.jpg"
+                    className="w-full px-4 py-2 border rounded-lg mt-1"
                   />
                 </div>
                 <div>
