@@ -14,6 +14,7 @@ export default function TeamAdmin() {
   const [editingMember, setEditingMember] = useState<TeamMember | null>(null);
   const [isAddingMember, setIsAddingMember] = useState(false);
   const [memberImageUrl, setMemberImageUrl] = useState('');
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   useEffect(() => {
     fetchData();
@@ -48,14 +49,14 @@ export default function TeamAdmin() {
     }
 
     if (!error) {
-      alert(editingMember ? 'Team member updated successfully!' : 'Team member added successfully!');
+      setToast({ message: editingMember ? 'تم تحديث العضو بنجاح!' : 'تم إضافة العضو بنجاح!', type: 'success' });
       setEditingMember(null);
       setIsAddingMember(false);
       setMemberImageUrl('');
       fetchData();
     } else {
       console.error('Error saving team member:', error);
-      alert('Error saving team member: ' + error.message);
+      setToast({ message: 'خطأ في حفظ العضو: ' + error.message, type: 'error' });
     }
     setSaving(false);
   };
@@ -66,10 +67,10 @@ export default function TeamAdmin() {
     const { error } = await supabase.from('team_members').delete().eq('id', id);
 
     if (!error) {
-      alert('Team member deleted successfully!');
+      setToast({ message: 'تم حذف العضو بنجاح!', type: 'success' });
       fetchData();
     } else {
-      alert('Error deleting team member');
+      setToast({ message: 'خطأ في حذف العضو', type: 'error' });
     }
   };
 
