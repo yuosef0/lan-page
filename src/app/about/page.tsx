@@ -55,75 +55,85 @@ export default function About() {
       </section>
 
       {/* Mission & Values */}
-      <section className="py-16 md:py-24 bg-white dark:bg-zinc-900">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-16">
-            <div className="space-y-8">
-              <div>
-                <h2 className="text-[22px] font-bold">{aboutData?.mission_title}</h2>
-                <p className="mt-2 text-base leading-relaxed">{aboutData?.mission_content}</p>
+      {(aboutData?.show_mission || aboutData?.show_values) && (
+        <section className="py-16 md:py-24 bg-white dark:bg-zinc-900">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-16">
+              <div className="space-y-8">
+                {aboutData?.show_mission && (
+                  <div>
+                    <h2 className="text-[22px] font-bold">{aboutData?.mission_title}</h2>
+                    <p className="mt-2 text-base leading-relaxed">{aboutData?.mission_content}</p>
+                  </div>
+                )}
+                {aboutData?.show_values && (
+                  <div>
+                    <h2 className="text-[22px] font-bold">{aboutData?.values_title}</h2>
+                    <p className="mt-2 text-base leading-relaxed">{aboutData?.values_content}</p>
+                  </div>
+                )}
               </div>
-              <div>
-                <h2 className="text-[22px] font-bold">{aboutData?.values_title}</h2>
-                <p className="mt-2 text-base leading-relaxed">{aboutData?.values_content}</p>
-              </div>
-            </div>
-            <div className="relative h-[400px] md:h-[500px]">
               {aboutData?.mission_image && (
-                <Image
-                  src={aboutData.mission_image}
-                  alt="Our team"
-                  fill
-                  className="rounded-lg object-cover shadow-lg"
-                />
+                <div className="relative h-[400px] md:h-[500px]">
+                  <Image
+                    src={aboutData.mission_image}
+                    alt="Our team"
+                    fill
+                    className="rounded-lg object-cover shadow-lg"
+                  />
+                </div>
               )}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Principles */}
-      <section className="py-16 md:py-24 bg-background-light dark:bg-background-dark">
-        <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-3xl font-bold sm:text-4xl">{aboutData?.principles_section_title}</h2>
-            <p className="mt-4">{aboutData?.principles_section_subtitle}</p>
-          </div>
-          <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
-            {principles.map((principle) => (
-              <div key={principle.id} className="flex flex-col gap-3 rounded-lg border p-6 text-center shadow-sm bg-white dark:bg-zinc-900">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <span className="material-symbols-outlined text-3xl">{principle.icon}</span>
+      {aboutData?.show_principles && principles.length > 0 && (
+        <section className="py-16 md:py-24 bg-background-light dark:bg-background-dark">
+          <div className="container mx-auto px-4">
+            <div className="mx-auto max-w-3xl text-center">
+              <h2 className="text-3xl font-bold sm:text-4xl">{aboutData?.principles_section_title}</h2>
+              <p className="mt-4">{aboutData?.principles_section_subtitle}</p>
+            </div>
+            <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
+              {principles.map((principle) => (
+                <div key={principle.id} className="flex flex-col gap-3 rounded-lg border p-6 text-center shadow-sm bg-white dark:bg-zinc-900">
+                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <span className="material-symbols-outlined text-3xl">{principle.icon}</span>
+                  </div>
+                  <h3 className="text-lg font-bold">{principle.title}</h3>
+                  <p className="text-sm">{principle.description}</p>
                 </div>
-                <h3 className="text-lg font-bold">{principle.title}</h3>
-                <p className="text-sm">{principle.description}</p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Team */}
-      <section className="py-16 md:py-24 bg-white dark:bg-zinc-900">
-        <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-3xl font-bold sm:text-4xl">{aboutData?.team_section_title}</h2>
-            <p className="mt-4">{aboutData?.team_section_subtitle}</p>
-          </div>
-          <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {teamMembers.map((member) => (
-              <div key={member.id} className="text-center">
-                <div className="relative mx-auto h-40 w-40 rounded-full overflow-hidden shadow-md">
-                  <Image src={member.image} alt={member.name} fill className="object-cover" />
+      {aboutData?.show_team && teamMembers.length > 0 && (
+        <section className="py-16 md:py-24 bg-white dark:bg-zinc-900">
+          <div className="container mx-auto px-4">
+            <div className="mx-auto max-w-3xl text-center">
+              <h2 className="text-3xl font-bold sm:text-4xl">{aboutData?.team_section_title}</h2>
+              <p className="mt-4">{aboutData?.team_section_subtitle}</p>
+            </div>
+            <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+              {teamMembers.map((member) => (
+                <div key={member.id} className="text-center">
+                  <div className="relative mx-auto h-40 w-40 rounded-full overflow-hidden shadow-md">
+                    <Image src={member.image} alt={member.name} fill className="object-cover" />
+                  </div>
+                  <h4 className="mt-4 text-lg font-bold">{member.name}</h4>
+                  <p className="text-sm text-primary">{member.position}</p>
+                  <p className="mt-2 text-xs text-text-light/70 dark:text-text-dark/70">{member.bio}</p>
                 </div>
-                <h4 className="mt-4 text-lg font-bold">{member.name}</h4>
-                <p className="text-sm text-primary">{member.position}</p>
-                <p className="mt-2 text-xs text-text-light/70 dark:text-text-dark/70">{member.bio}</p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </ClientLayout>
   );
 }

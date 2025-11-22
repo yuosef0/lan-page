@@ -13,9 +13,7 @@ export default function AboutAdmin() {
   const [saving, setSaving] = useState(false);
   const [editingPrinciple, setEditingPrinciple] = useState<Principle | null>(null);
   const [isAddingPrinciple, setIsAddingPrinciple] = useState(false);
-  const [heroImageUrl, setHeroImageUrl] = useState('');
   const [missionImageUrl, setMissionImageUrl] = useState('');
-  const [valuesImageUrl, setValuesImageUrl] = useState('');
 
   useEffect(() => {
     fetchData();
@@ -44,22 +42,23 @@ export default function AboutAdmin() {
       .update({
         hero_title: formData.get('hero_title') as string,
         hero_subtitle: formData.get('hero_subtitle') as string,
-        hero_image: heroImageUrl || (formData.get('hero_image') as string) || aboutPage.hero_image,
         mission_title: formData.get('mission_title') as string,
         mission_content: formData.get('mission_content') as string,
         mission_image: missionImageUrl || (formData.get('mission_image') as string) || aboutPage.mission_image,
+        show_mission: formData.get('show_mission') === 'on',
         values_title: formData.get('values_title') as string,
         values_content: formData.get('values_content') as string,
-        values_image: valuesImageUrl || (formData.get('values_image') as string) || aboutPage.values_image,
+        show_values: formData.get('show_values') === 'on',
         principles_section_title: formData.get('principles_section_title') as string,
+        show_principles: formData.get('show_principles') === 'on',
+        team_section_title: formData.get('team_section_title') as string,
+        show_team: formData.get('show_team') === 'on',
       })
       .eq('id', aboutPage.id);
 
     if (!error) {
       alert('About page updated successfully!');
-      setHeroImageUrl('');
       setMissionImageUrl('');
-      setValuesImageUrl('');
       fetchData();
     } else {
       console.error('Error updating about page:', error);
@@ -159,28 +158,23 @@ export default function AboutAdmin() {
                     className="w-full px-4 py-2 border rounded-lg"
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Hero Image</label>
-                  <ImageUpload
-                    currentImage={heroImageUrl || aboutPage?.hero_image}
-                    onImageUploaded={setHeroImageUrl}
-                    folder="about"
-                  />
-                  <p className="text-xs text-gray-500 mt-2">أو أدخل رابط الصورة:</p>
-                  <input
-                    type="url"
-                    name="hero_image"
-                    defaultValue={aboutPage?.hero_image || ''}
-                    placeholder="https://example.com/image.jpg"
-                    className="w-full px-4 py-2 border rounded-lg mt-1"
-                  />
-                </div>
               </div>
             </div>
 
             {/* Mission Section */}
             <div className="border-b pb-6">
-              <h3 className="font-bold mb-4">Mission Section</h3>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-bold">Mission Section</h3>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="show_mission"
+                    defaultChecked={aboutPage?.show_mission !== false}
+                    className="w-4 h-4 text-primary rounded"
+                  />
+                  <span className="text-sm font-medium">عرض في الموقع</span>
+                </label>
+              </div>
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">Title</label>
@@ -223,7 +217,18 @@ export default function AboutAdmin() {
 
             {/* Values Section */}
             <div className="border-b pb-6">
-              <h3 className="font-bold mb-4">Values Section</h3>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-bold">Values Section</h3>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="show_values"
+                    defaultChecked={aboutPage?.show_values !== false}
+                    className="w-4 h-4 text-primary rounded"
+                  />
+                  <span className="text-sm font-medium">عرض في الموقع</span>
+                </label>
+              </div>
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">Title</label>
@@ -245,35 +250,59 @@ export default function AboutAdmin() {
                     className="w-full px-4 py-2 border rounded-lg"
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Values Image</label>
-                  <ImageUpload
-                    currentImage={valuesImageUrl || aboutPage?.values_image}
-                    onImageUploaded={setValuesImageUrl}
-                    folder="about"
-                  />
-                  <p className="text-xs text-gray-500 mt-2">أو أدخل رابط الصورة:</p>
-                  <input
-                    type="url"
-                    name="values_image"
-                    defaultValue={aboutPage?.values_image || ''}
-                    placeholder="https://example.com/image.jpg"
-                    className="w-full px-4 py-2 border rounded-lg mt-1"
-                  />
-                </div>
               </div>
             </div>
 
-            {/* Principles Section Title */}
+            {/* Principles Section */}
+            <div className="border-b pb-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-bold">Principles Section</h3>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="show_principles"
+                    defaultChecked={aboutPage?.show_principles !== false}
+                    className="w-4 h-4 text-primary rounded"
+                  />
+                  <span className="text-sm font-medium">عرض في الموقع</span>
+                </label>
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Section Title</label>
+                <input
+                  type="text"
+                  name="principles_section_title"
+                  defaultValue={aboutPage?.principles_section_title}
+                  required
+                  className="w-full px-4 py-2 border rounded-lg"
+                />
+              </div>
+            </div>
+
+            {/* Team Section */}
             <div>
-              <label className="block text-sm font-medium mb-2">Principles Section Title</label>
-              <input
-                type="text"
-                name="principles_section_title"
-                defaultValue={aboutPage?.principles_section_title}
-                required
-                className="w-full px-4 py-2 border rounded-lg"
-              />
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-bold">Team Section</h3>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="show_team"
+                    defaultChecked={aboutPage?.show_team !== false}
+                    className="w-4 h-4 text-primary rounded"
+                  />
+                  <span className="text-sm font-medium">عرض في الموقع</span>
+                </label>
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Section Title</label>
+                <input
+                  type="text"
+                  name="team_section_title"
+                  defaultValue={aboutPage?.team_section_title}
+                  required
+                  className="w-full px-4 py-2 border rounded-lg"
+                />
+              </div>
             </div>
 
             <button
