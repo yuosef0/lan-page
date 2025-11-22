@@ -62,7 +62,7 @@ export default function HomeAdmin() {
     const cardData = {
       title: formData.get('title') as string,
       description: formData.get('description') as string,
-      image: cardImageUrl || formData.get('image') as string,
+      image: cardImageUrl || (formData.get('image') as string) || editingCard?.image || '',
       order: parseInt(formData.get('order') as string),
     };
 
@@ -82,7 +82,8 @@ export default function HomeAdmin() {
       setCardImageUrl('');
       fetchData();
     } else {
-      alert('Error saving card');
+      console.error('Error saving card:', error);
+      alert('Error saving card: ' + error.message);
     }
     setSaving(false);
   };

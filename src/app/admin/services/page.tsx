@@ -43,7 +43,7 @@ export default function ServicesAdmin() {
       .update({
         hero_title: formData.get('hero_title') as string,
         hero_subtitle: formData.get('hero_subtitle') as string,
-        hero_image: heroImageUrl || formData.get('hero_image') as string,
+        hero_image: heroImageUrl || (formData.get('hero_image') as string) || servicesPage.hero_image,
       })
       .eq('id', servicesPage.id);
 
@@ -52,7 +52,8 @@ export default function ServicesAdmin() {
       setHeroImageUrl('');
       fetchData();
     } else {
-      alert('Error updating hero section');
+      console.error('Error updating hero section:', error);
+      alert('Error updating hero section: ' + error.message);
     }
     setSaving(false);
   };
@@ -65,7 +66,7 @@ export default function ServicesAdmin() {
     const serviceData = {
       title: formData.get('title') as string,
       description: formData.get('description') as string,
-      image: serviceImageUrl || formData.get('image') as string,
+      image: serviceImageUrl || (formData.get('image') as string) || editingService?.image || '',
       image_position: formData.get('image_position') as 'left' | 'right',
       order: parseInt(formData.get('order') as string),
       is_active: formData.get('is_active') === 'true',
@@ -87,7 +88,8 @@ export default function ServicesAdmin() {
       setServiceImageUrl('');
       fetchData();
     } else {
-      alert('Error saving service');
+      console.error('Error saving service:', error);
+      alert('Error saving service: ' + error.message);
     }
     setSaving(false);
   };
