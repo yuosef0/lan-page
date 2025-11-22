@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
+import ImageUpload from '@/components/admin/ImageUpload';
 import { supabase } from '@/lib/supabase';
 import type { AboutPage, Principle } from '@/types/database';
 
@@ -12,6 +13,9 @@ export default function AboutAdmin() {
   const [saving, setSaving] = useState(false);
   const [editingPrinciple, setEditingPrinciple] = useState<Principle | null>(null);
   const [isAddingPrinciple, setIsAddingPrinciple] = useState(false);
+  const [heroImageUrl, setHeroImageUrl] = useState('');
+  const [missionImageUrl, setMissionImageUrl] = useState('');
+  const [valuesImageUrl, setValuesImageUrl] = useState('');
 
   useEffect(() => {
     fetchData();
@@ -40,19 +44,22 @@ export default function AboutAdmin() {
       .update({
         hero_title: formData.get('hero_title') as string,
         hero_subtitle: formData.get('hero_subtitle') as string,
-        hero_image: formData.get('hero_image') as string,
+        hero_image: heroImageUrl || formData.get('hero_image') as string,
         mission_title: formData.get('mission_title') as string,
         mission_content: formData.get('mission_content') as string,
-        mission_image: formData.get('mission_image') as string,
+        mission_image: missionImageUrl || formData.get('mission_image') as string,
         values_title: formData.get('values_title') as string,
         values_content: formData.get('values_content') as string,
-        values_image: formData.get('values_image') as string,
+        values_image: valuesImageUrl || formData.get('values_image') as string,
         principles_section_title: formData.get('principles_section_title') as string,
       })
       .eq('id', aboutPage.id);
 
     if (!error) {
       alert('About page updated successfully!');
+      setHeroImageUrl('');
+      setMissionImageUrl('');
+      setValuesImageUrl('');
       fetchData();
     } else {
       alert('Error updating about page');
@@ -152,12 +159,19 @@ export default function AboutAdmin() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">Hero Image URL</label>
+                  <label className="block text-sm font-medium mb-2">Hero Image</label>
+                  <ImageUpload
+                    currentImage={heroImageUrl || aboutPage?.hero_image}
+                    onImageUploaded={setHeroImageUrl}
+                    folder="about"
+                  />
+                  <p className="text-xs text-gray-500 mt-2">أو أدخل رابط الصورة:</p>
                   <input
                     type="url"
                     name="hero_image"
                     defaultValue={aboutPage?.hero_image || ''}
-                    className="w-full px-4 py-2 border rounded-lg"
+                    placeholder="https://example.com/image.jpg"
+                    className="w-full px-4 py-2 border rounded-lg mt-1"
                   />
                 </div>
               </div>
@@ -188,12 +202,19 @@ export default function AboutAdmin() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">Image URL</label>
+                  <label className="block text-sm font-medium mb-2">Mission Image</label>
+                  <ImageUpload
+                    currentImage={missionImageUrl || aboutPage?.mission_image}
+                    onImageUploaded={setMissionImageUrl}
+                    folder="about"
+                  />
+                  <p className="text-xs text-gray-500 mt-2">أو أدخل رابط الصورة:</p>
                   <input
                     type="url"
                     name="mission_image"
                     defaultValue={aboutPage?.mission_image || ''}
-                    className="w-full px-4 py-2 border rounded-lg"
+                    placeholder="https://example.com/image.jpg"
+                    className="w-full px-4 py-2 border rounded-lg mt-1"
                   />
                 </div>
               </div>
@@ -224,12 +245,19 @@ export default function AboutAdmin() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">Image URL</label>
+                  <label className="block text-sm font-medium mb-2">Values Image</label>
+                  <ImageUpload
+                    currentImage={valuesImageUrl || aboutPage?.values_image}
+                    onImageUploaded={setValuesImageUrl}
+                    folder="about"
+                  />
+                  <p className="text-xs text-gray-500 mt-2">أو أدخل رابط الصورة:</p>
                   <input
                     type="url"
                     name="values_image"
                     defaultValue={aboutPage?.values_image || ''}
-                    className="w-full px-4 py-2 border rounded-lg"
+                    placeholder="https://example.com/image.jpg"
+                    className="w-full px-4 py-2 border rounded-lg mt-1"
                   />
                 </div>
               </div>

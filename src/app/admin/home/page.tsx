@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
+import ImageUpload from '@/components/admin/ImageUpload';
 import { supabase } from '@/lib/supabase';
 import type { HomePage, FeatureCard } from '@/types/database';
 
@@ -12,6 +13,7 @@ export default function HomeAdmin() {
   const [saving, setSaving] = useState(false);
   const [editingCard, setEditingCard] = useState<FeatureCard | null>(null);
   const [isAddingCard, setIsAddingCard] = useState(false);
+  const [cardImageUrl, setCardImageUrl] = useState('');
 
   useEffect(() => {
     fetchData();
@@ -60,7 +62,7 @@ export default function HomeAdmin() {
     const cardData = {
       title: formData.get('title') as string,
       description: formData.get('description') as string,
-      image: formData.get('image') as string,
+      image: cardImageUrl || formData.get('image') as string,
       order: parseInt(formData.get('order') as string),
     };
 
@@ -77,6 +79,7 @@ export default function HomeAdmin() {
       alert(editingCard ? 'Card updated successfully!' : 'Card added successfully!');
       setEditingCard(null);
       setIsAddingCard(false);
+      setCardImageUrl('');
       fetchData();
     } else {
       alert('Error saving card');
@@ -215,13 +218,19 @@ export default function HomeAdmin() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">Image URL</label>
+                  <label className="block text-sm font-medium mb-2">Card Image</label>
+                  <ImageUpload
+                    currentImage={cardImageUrl || editingCard?.image}
+                    onImageUploaded={setCardImageUrl}
+                    folder="home"
+                  />
+                  <p className="text-xs text-gray-500 mt-2">أو أدخل رابط الصورة:</p>
                   <input
                     type="url"
                     name="image"
                     defaultValue={editingCard?.image}
-                    required
-                    className="w-full px-4 py-2 border rounded-lg"
+                    placeholder="https://example.com/image.jpg"
+                    className="w-full px-4 py-2 border rounded-lg mt-1"
                   />
                 </div>
                 <div>
