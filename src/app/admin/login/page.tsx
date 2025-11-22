@@ -30,16 +30,28 @@ export default function AdminLogin() {
         console.error('Login error:', authError);
         setError(authError.message);
       } else if (data.session) {
-        console.log('Login successful!');
-        // Use window.location for full page reload to ensure cookies are set
-        window.location.href = '/admin/dashboard';
+        console.log('Login successful! Session:', data.session);
+
+        // Wait a bit for the session to be stored in localStorage
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        // Verify session is stored
+        const { data: { session } } = await supabase.auth.getSession();
+        console.log('Session after storage:', session);
+
+        if (session) {
+          console.log('Redirecting to dashboard...');
+          window.location.href = '/admin/dashboard';
+        } else {
+          setError('Session was not stored properly. Please try again.');
+          setLoading(false);
+        }
       } else {
         setError('Login failed - no session returned');
       }
     } catch (err) {
       console.error('Unexpected error:', err);
       setError(`An unexpected error occurred: ${err}`);
-    } finally {
       setLoading(false);
     }
   };
