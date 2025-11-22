@@ -40,9 +40,9 @@ export default function Home() {
     <ClientLayout>
       {/* Hero Section */}
       <section className="relative py-20 px-4 text-center overflow-hidden bg-background-light dark:bg-background-dark">
-        <div className="absolute inset-0 z-0 opacity-5">
-          <div className="absolute top-[-50px] left-[-50px] size-40 border-2 border-primary rounded-full"></div>
-          <div className="absolute bottom-[-20px] right-[-30px] size-60 border border-primary rounded-full"></div>
+        <div className="absolute inset-0 z-0 opacity-20">
+          <div className="absolute top-[-50px] left-[-50px] size-40 border-4 border-primary rounded-full"></div>
+          <div className="absolute bottom-[-20px] right-[-30px] size-60 border-4 border-primary rounded-full"></div>
         </div>
 
         <div className="relative z-10 container mx-auto max-w-7xl flex flex-col items-center gap-4">
@@ -58,9 +58,9 @@ export default function Home() {
       {/* Feature Cards */}
       <section className="py-16 px-4 bg-white dark:bg-zinc-900">
         <div className="container mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className={`grid grid-cols-1 md:grid-cols-3 gap-8 ${featureCards.length === 1 ? 'md:justify-items-center' : ''}`}>
             {featureCards.map((card) => (
-              <div key={card.id} className="flex flex-col gap-3 pb-3">
+              <div key={card.id} className={`flex flex-col gap-3 pb-3 ${featureCards.length === 1 ? 'md:max-w-md' : ''}`}>
                 <div className="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg relative overflow-hidden">
                   <Image
                     src={card.image}
