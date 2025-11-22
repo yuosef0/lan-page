@@ -30,17 +30,27 @@ NEXT_PUBLIC_SUPABASE_URL=your-project-url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 ```
 
-### 5️⃣ إنشاء Admin User
-1. اذهب لـ **Authentication** في Supabase Dashboard
+### 5️⃣ تعطيل التسجيل العام (مهم جداً! 🔒)
+1. اذهب لـ **Authentication > Providers** في Supabase Dashboard
+2. اضغط على **Email**
+3. **قم بإلغاء تفعيل "Enable sign ups"** ❌
+4. اضغط **Save** ✅
+
+⚠️ **مهم:** هذا يمنع أي شخص من إنشاء حساب جديد. فقط الـ Admin يقدر يسجل دخول!
+
+### 6️⃣ إنشاء Admin User
+1. اذهب لـ **Authentication > Users** في Supabase Dashboard
 2. اضغط **Add User**
 3. Email: `admin@apexbase.com`
 4. Password: `Admin123!` (أو أي password تريده)
-5. اضغط **Create User** ✅
+5. ✅ **اختار "Auto Confirm User"** عشان الحساب يشتغل فوراً
+6. اضغط **Create User** ✅
 
 الآن يمكنك:
 - ✅ فتح الموقع: http://localhost:3000
 - ✅ تسجيل دخول Admin: http://localhost:3000/admin/login
 - ✅ تعديل كل المحتوى من لوحة التحكم
+- 🔒 لا أحد غيرك يقدر يسجل حساب جديد!
 
 ---
 
@@ -51,30 +61,23 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 | 🏠 الموقع | http://localhost:3000 |
 | 🔐 لوحة التحكم | http://localhost:3000/admin/login |
 | 📊 Dashboard | http://localhost:3000/admin/dashboard |
-| 🔌 Backend API | http://localhost:5000/api |
 
 ---
 
 ## ⚡ أوامر سريعة
 
-### Backend
 ```bash
-npm run dev      # تشغيل الخادم
-npm run seed     # إعادة تحميل البيانات الأولية
-```
-
-### Frontend
-```bash
-npm run dev      # تشغيل الموقع
+npm run dev      # تشغيل المشروع
 npm run build    # بناء للإنتاج
+npm run start    # تشغيل نسخة الإنتاج
 ```
 
 ---
 
 ## 🎨 تخصيص اللون الأساسي
 
-عدّل ملف `frontend/tailwind.config.js`:
-```javascript
+عدّل ملف `tailwind.config.ts`:
+```typescript
 colors: {
   primary: '#A52A2A',  // غيّر هذا اللون
 }
@@ -84,44 +87,42 @@ colors: {
 
 ## 📝 إضافة محتوى جديد
 
-### عبر لوحة التحكم (موصى به)
-1. سجل دخول على `/admin/login`
-2. اذهب للصفحة المطلوبة
-3. اضغط على الأزرار للتعديل
-
-### عبر API مباشرة
-استخدم Postman أو curl:
-
-```bash
-# مثال: إضافة service جديد
-curl -X POST http://localhost:5000/api/services \
-  -H "Authorization: Bearer YOUR_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "title": "New Service",
-    "description": "Description here",
-    "image": "https://example.com/image.jpg",
-    "imagePosition": "left",
-    "order": 1
-  }'
-```
+### عبر لوحة التحكم (الطريقة الوحيدة)
+1. سجل دخول على http://localhost:3000/admin/login
+2. اختر الصفحة من القائمة الجانبية:
+   - **Home Page**: تعديل الـ Hero وإضافة/تعديل الكروت
+   - **About Page**: تعديل كل الأقسام (Mission, Values, Principles)
+   - **Services**: إضافة/تعديل/حذف الخدمات
+   - **Team Members**: إدارة فريق العمل
+   - **Contact Info**: تحديث معلومات التواصل
+   - **Submissions**: عرض رسائل العملاء
+3. اضغط على الأزرار للإضافة أو التعديل
+4. احفظ التغييرات ✅
 
 ---
 
 ## 🆘 مشاكل شائعة
 
-### ❌ Backend لا يعمل
-- تأكد من تشغيل MongoDB
-- تحقق من ملف `.env`
-- جرّب `npm run seed` مرة أخرى
+### ❌ لا أستطيع تسجيل الدخول للـ Admin
+1. تأكد من أن الـ email والـ password صحيحين: `admin@apexbase.com` / `Admin123!`
+2. تحقق من Supabase Dashboard أن المستخدم موجود في **Authentication > Users**
+3. تأكد من أن المستخدم "Confirmed" (أخضر) مش "Waiting for verification"
+   - لو مش confirmed، اضغط على المستخدم واختر "Confirm email"
+4. تحقق من `.env.local` أن الـ Supabase URL و Key صحيحين
 
-### ❌ Frontend لا يتصل بالـ Backend
-- تأكد من `.env.local` يحتوي على `NEXT_PUBLIC_API_URL=http://localhost:5000/api`
-- تأكد من أن Backend شغال على port 5000
+### ❌ شخص غريب سجل حساب في الموقع
+- اذهب لـ **Authentication > Providers > Email** وتأكد أن **"Enable sign ups"** مغلق ❌
+- احذف المستخدمين غير المصرح لهم من **Authentication > Users**
 
-### ❌ لا أستطيع تسجيل الدخول
-- استخدم البيانات الافتراضية: `admin@apexbase.com` / `Admin123!`
-- جرّب `npm run seed` في Backend لإعادة إنشاء المستخدم
+### ❌ المشروع لا يشتغل
+- تأكد من تشغيل `npm install` أولاً
+- تحقق من وجود ملف `.env.local` بالبيانات الصحيحة
+- تأكد من تشغيل الـ SQL schema في Supabase SQL Editor
+
+### ❌ الصور لا تظهر
+- استخدم روابط صور مباشرة من Unsplash أو أي CDN
+- مثال: `https://images.unsplash.com/photo-xxxxx?w=800`
+- أو ارفع الصور على Supabase Storage واستخدم الروابط
 
 ---
 

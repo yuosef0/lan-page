@@ -1,17 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
-// Client for use in client components
+// Main Supabase client - works in both client and server components
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-// Client component helper
-export const createClient = () => createClientComponentClient();
-
-// Server-side client (for API routes)
-export const getServiceRoleClient = () => {
-  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-  return createClient(supabaseUrl, supabaseServiceKey);
-};
