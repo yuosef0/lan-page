@@ -1,12 +1,29 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { supabase } from '@/lib/supabase';
+import type { SiteSettings } from '@/types/database';
 
 export default function Header() {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [siteSettings, setSiteSettings] = useState<SiteSettings | null>(null);
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      const { data } = await supabase
+        .from('site_settings')
+        .select('*')
+        .single();
+
+      if (data) setSiteSettings(data);
+    };
+
+    fetchSettings();
+  }, []);
 
   const navLinks = [
     { href: '/', label: 'Home' },
@@ -21,11 +38,22 @@ export default function Header() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-4">
-            <div className="size-8 flex-shrink-0 bg-primary text-white rounded-md flex items-center justify-center font-black text-xl">
-              AB
-            </div>
+            {siteSettings?.logo_url ? (
+              <div className="relative h-10 w-10 flex-shrink-0">
+                <Image
+                  src={siteSettings.logo_url}
+                  alt={siteSettings.site_name || 'Logo'}
+                  fill
+                  className="object-contain"
+                />
+              </div>
+            ) : (
+              <div className="size-8 flex-shrink-0 bg-primary text-white rounded-md flex items-center justify-center font-black text-xl">
+                AB
+              </div>
+            )}
             <h2 className="text-text-light dark:text-text-dark text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">
-              Apex & Base
+              {siteSettings?.site_name || 'Apex & Base'}
             </h2>
           </Link>
 

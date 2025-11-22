@@ -45,10 +45,14 @@ export default function AboutAdmin() {
         mission_title: formData.get('mission_title') as string,
         mission_content: formData.get('mission_content') as string,
         mission_image: missionImageUrl || (formData.get('mission_image') as string) || aboutPage.mission_image,
+        show_mission: formData.get('show_mission') === 'on',
         values_title: formData.get('values_title') as string,
         values_content: formData.get('values_content') as string,
+        show_values: formData.get('show_values') === 'on',
         principles_section_title: formData.get('principles_section_title') as string,
+        show_principles: formData.get('show_principles') === 'on',
         team_section_title: formData.get('team_section_title') as string,
+        show_team: formData.get('show_team') === 'on',
       })
       .eq('id', aboutPage.id);
 
@@ -159,7 +163,18 @@ export default function AboutAdmin() {
 
             {/* Mission Section */}
             <div className="border-b pb-6">
-              <h3 className="font-bold mb-4">Mission Section</h3>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-bold">Mission Section</h3>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="show_mission"
+                    defaultChecked={aboutPage?.show_mission !== false}
+                    className="w-4 h-4 text-primary rounded"
+                  />
+                  <span className="text-sm font-medium">عرض في الموقع</span>
+                </label>
+              </div>
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">Title</label>
@@ -202,7 +217,18 @@ export default function AboutAdmin() {
 
             {/* Values Section */}
             <div className="border-b pb-6">
-              <h3 className="font-bold mb-4">Values Section</h3>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-bold">Values Section</h3>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="show_values"
+                    defaultChecked={aboutPage?.show_values !== false}
+                    className="w-4 h-4 text-primary rounded"
+                  />
+                  <span className="text-sm font-medium">عرض في الموقع</span>
+                </label>
+              </div>
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">Title</label>
@@ -229,7 +255,18 @@ export default function AboutAdmin() {
 
             {/* Principles Section */}
             <div className="border-b pb-6">
-              <h3 className="font-bold mb-4">Principles Section</h3>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-bold">Principles Section</h3>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="show_principles"
+                    defaultChecked={aboutPage?.show_principles !== false}
+                    className="w-4 h-4 text-primary rounded"
+                  />
+                  <span className="text-sm font-medium">عرض في الموقع</span>
+                </label>
+              </div>
               <div>
                 <label className="block text-sm font-medium mb-2">Section Title</label>
                 <input
@@ -244,7 +281,18 @@ export default function AboutAdmin() {
 
             {/* Team Section */}
             <div>
-              <h3 className="font-bold mb-4">Team Section</h3>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-bold">Team Section</h3>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="show_team"
+                    defaultChecked={aboutPage?.show_team !== false}
+                    className="w-4 h-4 text-primary rounded"
+                  />
+                  <span className="text-sm font-medium">عرض في الموقع</span>
+                </label>
+              </div>
               <div>
                 <label className="block text-sm font-medium mb-2">Section Title</label>
                 <input

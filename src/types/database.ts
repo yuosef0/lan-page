@@ -23,12 +23,16 @@ export interface AboutPage {
   mission_title: string;
   mission_content: string;
   mission_image?: string;
+  show_mission?: boolean;
   values_title: string;
   values_content: string;
+  show_values?: boolean;
   principles_section_title: string;
   principles_section_subtitle?: string;
+  show_principles?: boolean;
   team_section_title: string;
   team_section_subtitle?: string;
+  show_team?: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -107,6 +111,14 @@ export interface ContactSubmission {
   phone?: string;
   status: 'new' | 'read' | 'responded' | 'archived';
   notes?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface SiteSettings {
+  id: string;
+  logo_url?: string;
+  site_name: string;
   created_at: string;
   updated_at: string;
 }
