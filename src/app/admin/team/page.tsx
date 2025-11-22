@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
 import ImageUpload from '@/components/admin/ImageUpload';
+import Toast from '@/components/admin/Toast';
 import { supabase } from '@/lib/supabase';
 import type { TeamMember } from '@/types/database';
 
@@ -78,7 +79,14 @@ export default function TeamAdmin() {
         <div className="flex items-center justify-center h-full">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
         </div>
-      </AdminLayout>
+        {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
+    </AdminLayout>
     );
   }
 
@@ -222,6 +230,13 @@ export default function TeamAdmin() {
           </div>
         )}
       </div>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
     </AdminLayout>
   );
 }

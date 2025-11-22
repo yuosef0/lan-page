@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
 import ImageUpload from '@/components/admin/ImageUpload';
+import Toast from '@/components/admin/Toast';
 import { supabase } from '@/lib/supabase';
 import type { ServicesPage, Service } from '@/types/database';
 
@@ -82,7 +83,7 @@ export default function ServicesAdmin() {
     }
 
     if (!error) {
-      alert(editingService ? 'Service updated successfully!' : 'Service added successfully!');
+      setToast({ message: editingService ? 'تم تحديث الخدمة بنجاح!' : 'تم إضافة الخدمة بنجاح!', type: 'success' });
       setEditingService(null);
       setIsAddingService(false);
       setServiceImageUrl('');
@@ -100,10 +101,10 @@ export default function ServicesAdmin() {
     const { error } = await supabase.from('services').delete().eq('id', id);
 
     if (!error) {
-      alert('Service deleted successfully!');
+      setToast({ message: 'تم حذف الخدمة بنجاح!', type: 'success' });
       fetchData();
     } else {
-      alert('Error deleting service');
+      setToast({ message: 'خطأ في حذف الخدمة', type: 'error' });
     }
   };
 
@@ -124,7 +125,14 @@ export default function ServicesAdmin() {
         <div className="flex items-center justify-center h-full">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
         </div>
-      </AdminLayout>
+        {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
+    </AdminLayout>
     );
   }
 
@@ -347,6 +355,13 @@ export default function ServicesAdmin() {
           </div>
         )}
       </div>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
     </AdminLayout>
   );
 }

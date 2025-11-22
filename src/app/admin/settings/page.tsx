@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
 import ImageUpload from '@/components/admin/ImageUpload';
+import Toast from '@/components/admin/Toast';
 import { supabase } from '@/lib/supabase';
 import type { SiteSettings } from '@/types/database';
 
@@ -11,6 +12,7 @@ export default function SettingsAdmin() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [logoUrl, setLogoUrl] = useState('');
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   useEffect(() => {
     fetchData();
@@ -42,12 +44,12 @@ export default function SettingsAdmin() {
       .eq('id', settings.id);
 
     if (!error) {
-      alert('Settings updated successfully!');
+      setToast({ message: 'تم تحديث الإعدادات بنجاح!', type: 'success' });
       setLogoUrl('');
       fetchData();
     } else {
       console.error('Error updating settings:', error);
-      alert('Error updating settings: ' + error.message);
+      setToast({ message: 'خطأ في التحديث: ' + error.message, type: 'error' });
     }
     setSaving(false);
   };
@@ -93,6 +95,8 @@ export default function SettingsAdmin() {
                 currentImage={logoUrl || settings?.logo_url}
                 onImageUploaded={setLogoUrl}
                 folder="branding"
+                onSuccess={(msg) => setToast({ message: msg, type: 'success' })}
+                onError={(msg) => setToast({ message: msg, type: 'error' })}
               />
               <p className="text-xs text-gray-500 mt-2">أو أدخل رابط اللوجو:</p>
               <input
@@ -115,6 +119,13 @@ export default function SettingsAdmin() {
           </form>
         </div>
       </div>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
     </AdminLayout>
   );
 }

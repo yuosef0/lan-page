@@ -41,10 +41,10 @@ export default function SubmissionsAdmin() {
     const { error } = await supabase.from('contact_submissions').delete().eq('id', id);
 
     if (!error) {
-      alert('Submission deleted successfully!');
+      setToast({ message: 'تم حذف الرسالة بنجاح!', type: 'success' });
       fetchData();
     } else {
-      alert('Error deleting submission');
+      setToast({ message: 'خطأ في حذف الرسالة', type: 'error' });
     }
   };
 
@@ -56,7 +56,14 @@ export default function SubmissionsAdmin() {
         <div className="flex items-center justify-center h-full">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
         </div>
-      </AdminLayout>
+        {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
+    </AdminLayout>
     );
   }
 
@@ -177,6 +184,13 @@ export default function SubmissionsAdmin() {
           )}
         </div>
       </div>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
     </AdminLayout>
   );
 }
