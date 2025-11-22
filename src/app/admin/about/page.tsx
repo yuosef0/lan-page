@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
 import ImageUpload from '@/components/admin/ImageUpload';
+import Toast from '@/components/admin/Toast';
 import { supabase } from '@/lib/supabase';
 import type { AboutPage, Principle } from '@/types/database';
 
@@ -14,6 +15,7 @@ export default function AboutAdmin() {
   const [editingPrinciple, setEditingPrinciple] = useState<Principle | null>(null);
   const [isAddingPrinciple, setIsAddingPrinciple] = useState(false);
   const [missionImageUrl, setMissionImageUrl] = useState('');
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   useEffect(() => {
     fetchData();
@@ -57,12 +59,12 @@ export default function AboutAdmin() {
       .eq('id', aboutPage.id);
 
     if (!error) {
-      alert('About page updated successfully!');
+      setToast({ message: 'تم تحديث صفحة About بنجاح!', type: 'success' });
       setMissionImageUrl('');
       fetchData();
     } else {
       console.error('Error updating about page:', error);
-      alert('Error updating about page: ' + error.message);
+      setToast({ message: 'خطأ في التحديث: ' + error.message, type: 'error' });
     }
     setSaving(false);
   };
@@ -89,26 +91,29 @@ export default function AboutAdmin() {
     }
 
     if (!error) {
-      alert(editingPrinciple ? 'Principle updated successfully!' : 'Principle added successfully!');
+      setToast({
+        message: editingPrinciple ? 'تم تحديث المبدأ بنجاح!' : 'تم إضافة المبدأ بنجاح!',
+        type: 'success'
+      });
       setEditingPrinciple(null);
       setIsAddingPrinciple(false);
       fetchData();
     } else {
-      alert('Error saving principle');
+      setToast({ message: 'خطأ في حفظ المبدأ', type: 'error' });
     }
     setSaving(false);
   };
 
   const handleDeletePrinciple = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this principle?')) return;
+    if (!confirm('هل أنت متأكد من حذف هذا المبدأ؟')) return;
 
     const { error } = await supabase.from('principles').delete().eq('id', id);
 
     if (!error) {
-      alert('Principle deleted successfully!');
+      setToast({ message: 'تم حذف المبدأ بنجاح!', type: 'success' });
       fetchData();
     } else {
-      alert('Error deleting principle');
+      setToast({ message: 'خطأ في حذف المبدأ', type: 'error' });
     }
   };
 
@@ -205,6 +210,8 @@ export default function AboutAdmin() {
                     currentImage={missionImageUrl || aboutPage?.mission_image}
                     onImageUploaded={setMissionImageUrl}
                     folder="about"
+                    onSuccess={(msg) => setToast({ message: msg, type: 'success' })}
+                    onError={(msg) => setToast({ message: msg, type: 'error' })}
                   />
                   <p className="text-xs text-gray-500 mt-2">أو أدخل رابط الصورة:</p>
                   <input
@@ -439,6 +446,13 @@ export default function AboutAdmin() {
           </div>
         )}
       </div>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
     </AdminLayout>
   );
 }

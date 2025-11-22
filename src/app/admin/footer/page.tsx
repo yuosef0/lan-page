@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
+import Toast from '@/components/admin/Toast';
 import { supabase } from '@/lib/supabase';
 import type { ContactInfo } from '@/types/database';
 
@@ -9,6 +10,7 @@ export default function FooterAdmin() {
   const [footerData, setFooterData] = useState<ContactInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   useEffect(() => {
     fetchData();
@@ -45,11 +47,11 @@ export default function FooterAdmin() {
       .eq('id', footerData.id);
 
     if (!error) {
-      alert('Footer updated successfully!');
+      setToast({ message: 'تم تحديث الفوتر بنجاح!', type: 'success' });
       fetchData();
     } else {
       console.error('Error updating footer:', error);
-      alert('Error updating footer: ' + error.message);
+      setToast({ message: 'خطأ في التحديث: ' + error.message, type: 'error' });
     }
     setSaving(false);
   };
@@ -196,6 +198,13 @@ export default function FooterAdmin() {
           </form>
         </div>
       </div>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
     </AdminLayout>
   );
 }

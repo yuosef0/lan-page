@@ -8,6 +8,8 @@ interface ImageUploadProps {
   onImageUploaded: (url: string) => void;
   bucket?: string;
   folder?: string;
+  onSuccess?: (message: string) => void;
+  onError?: (message: string) => void;
 }
 
 export default function ImageUpload({
@@ -15,6 +17,8 @@ export default function ImageUpload({
   onImageUploaded,
   bucket = 'images',
   folder = 'uploads',
+  onSuccess,
+  onError,
 }: ImageUploadProps) {
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState<string | null>(currentImage || null);
@@ -26,13 +30,13 @@ export default function ImageUpload({
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      alert('Please select an image file');
+      onError?.('الرجاء اختيار ملف صورة');
       return;
     }
 
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
-      alert('File size must be less than 5MB');
+      onError?.('حجم الملف يجب أن يكون أقل من 5 ميجابايت');
       return;
     }
 
@@ -65,7 +69,7 @@ export default function ImageUpload({
 
       if (error) {
         console.error('Upload error:', error);
-        alert('Error uploading image: ' + error.message);
+        onError?.('خطأ في رفع الصورة: ' + error.message);
         return;
       }
 
@@ -75,10 +79,10 @@ export default function ImageUpload({
         .getPublicUrl(fileName);
 
       onImageUploaded(publicUrl);
-      alert('Image uploaded successfully!');
+      onSuccess?.('تم رفع الصورة بنجاح!');
     } catch (error) {
       console.error('Upload error:', error);
-      alert('Error uploading image');
+      onError?.('خطأ في رفع الصورة');
     } finally {
       setUploading(false);
     }
