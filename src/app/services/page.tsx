@@ -40,19 +40,19 @@ export default function Services() {
     <ClientLayout>
       {/* Hero */}
       <section className="bg-background-light dark:bg-background-dark">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 lg:py-24">
-          <div className="flex flex-col gap-8 md:flex-row md:items-center">
-            <div className="flex flex-col gap-6 text-center md:text-left md:flex-1">
-              <h1 className="text-4xl font-black md:text-5xl lg:text-6xl">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 lg:py-24">
+          <div className="flex flex-col gap-6 sm:gap-8 md:flex-row md:items-center">
+            <div className="flex flex-col gap-4 sm:gap-6 text-center md:text-left md:flex-1">
+              <h1 className="text-3xl font-black sm:text-4xl md:text-5xl lg:text-6xl leading-tight">
                 {servicesPage?.hero_title}
               </h1>
-              <h2 className="text-base md:text-lg">
+              <h2 className="text-sm sm:text-base md:text-lg leading-relaxed">
                 {servicesPage?.hero_subtitle}
               </h2>
             </div>
             {servicesPage?.hero_image && (
               <div className="w-full md:flex-1">
-                <div className="relative aspect-video rounded-xl overflow-hidden">
+                <div className="relative aspect-video rounded-lg sm:rounded-xl overflow-hidden">
                   <Image src={servicesPage.hero_image} alt="Services" fill className="object-cover" />
                 </div>
               </div>
@@ -67,20 +67,20 @@ export default function Services() {
           key={service.id}
           className={index % 2 === 0 ? 'bg-white dark:bg-zinc-900' : 'bg-background-light dark:bg-background-dark'}
         >
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 lg:py-24">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 lg:py-24">
             <div
-              className={`flex flex-col gap-8 md:items-center md:gap-12 ${
+              className={`flex flex-col gap-6 sm:gap-8 md:items-center md:gap-12 ${
                 service.image_position === 'right' ? 'md:flex-row' : 'md:flex-row-reverse'
               }`}
             >
               <div className="w-full md:flex-1">
-                <div className="relative aspect-video rounded-xl overflow-hidden">
+                <div className="relative aspect-video rounded-lg sm:rounded-xl overflow-hidden">
                   <Image src={service.image} alt={service.title} fill className="object-cover" />
                 </div>
               </div>
-              <div className="flex flex-col gap-6 md:flex-1">
-                <h2 className="text-[32px] font-bold md:text-4xl">{service.title}</h2>
-                <p className="text-base leading-relaxed">{service.description}</p>
+              <div className="flex flex-col gap-4 sm:gap-6 md:flex-1">
+                <h2 className="text-2xl font-bold sm:text-3xl md:text-4xl leading-tight">{service.title}</h2>
+                <p className="text-sm sm:text-base leading-relaxed">{service.description}</p>
               </div>
             </div>
           </div>
