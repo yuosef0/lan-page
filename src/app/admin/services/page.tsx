@@ -139,15 +139,15 @@ export default function ServicesAdmin() {
 
   return (
     <AdminLayout>
-      <div className="space-y-8">
+      <div className="space-y-6 sm:space-y-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Services</h1>
-          <p className="text-gray-600 mt-1">Manage services page and services list</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Services</h1>
+          <p className="text-sm sm:text-base text-gray-600 mt-1">Manage services page and services list</p>
         </div>
 
         {/* Hero Section */}
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-bold mb-4">Hero Section</h2>
+        <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+          <h2 className="text-lg sm:text-xl font-bold mb-4">Hero Section</h2>
           <form onSubmit={handleSaveHero} className="space-y-4">
             <div>
               <label className="block text-sm font-medium mb-2">Title</label>
@@ -196,54 +196,56 @@ export default function ServicesAdmin() {
         </div>
 
         {/* Services List */}
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold">Services</h2>
+        <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 mb-4">
+            <h2 className="text-lg sm:text-xl font-bold">Services</h2>
             <button
               onClick={() => setIsAddingService(true)}
-              className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 text-sm"
             >
-              <span className="material-symbols-outlined">add</span>
+              <span className="material-symbols-outlined text-lg">add</span>
               <span>Add Service</span>
             </button>
           </div>
 
           <div className="space-y-4">
             {services.map((service) => (
-              <div key={service.id} className="border rounded-lg p-4 flex gap-4">
-                <img src={service.image} alt={service.title} className="w-32 h-32 object-cover rounded-lg" />
-                <div className="flex-1">
-                  <div className="flex items-start justify-between mb-2">
-                    <div>
-                      <h3 className="font-bold text-lg">{service.title}</h3>
-                      <p className="text-sm text-gray-600 mt-1">{service.description}</p>
-                    </div>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => handleToggleActive(service)}
-                        className={`px-3 py-1 rounded text-sm ${
-                          service.is_active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
-                        }`}
-                      >
-                        {service.is_active ? 'Active' : 'Inactive'}
-                      </button>
+              <div key={service.id} className="border rounded-lg p-3 sm:p-4 flex flex-col sm:flex-row gap-3 sm:gap-4">
+                <div className="w-full sm:w-32 h-40 sm:h-32 flex-shrink-0">
+                  <img src={service.image} alt={service.title} className="w-full h-full object-cover rounded-lg" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-col sm:flex-row items-start justify-between gap-2 sm:gap-4 mb-2">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-2">
+                        <h3 className="font-bold text-base sm:text-lg">{service.title}</h3>
+                        <button
+                          onClick={() => handleToggleActive(service)}
+                          className={`flex-shrink-0 px-2 sm:px-3 py-1 rounded text-xs sm:text-sm whitespace-nowrap ${
+                            service.is_active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
+                          }`}
+                        >
+                          {service.is_active ? 'Active' : 'Inactive'}
+                        </button>
+                      </div>
+                      <p className="text-xs sm:text-sm text-gray-600 mt-1 line-clamp-2">{service.description}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-4 text-sm text-gray-500 mt-3">
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-500 mt-2">
                     <span>Position: {service.image_position}</span>
                     <span>Order: {service.order}</span>
                   </div>
-                  <div className="flex gap-2 mt-3">
+                  <div className="flex flex-wrap gap-2 mt-3">
                     <button
                       onClick={() => setEditingService(service)}
-                      className="flex items-center gap-1 bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600"
+                      className="flex items-center gap-1 bg-blue-500 text-white px-3 py-1.5 sm:py-1 rounded text-xs sm:text-sm hover:bg-blue-600"
                     >
                       <span className="material-symbols-outlined text-sm">edit</span>
                       <span>Edit</span>
                     </button>
                     <button
                       onClick={() => handleDeleteService(service.id)}
-                      className="flex items-center gap-1 bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600"
+                      className="flex items-center gap-1 bg-red-500 text-white px-3 py-1.5 sm:py-1 rounded text-xs sm:text-sm hover:bg-red-600"
                     >
                       <span className="material-symbols-outlined text-sm">delete</span>
                       <span>Delete</span>
