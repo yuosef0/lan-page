@@ -196,8 +196,8 @@ export default function HomeAdmin() {
 
         {/* Add/Edit Card Modal */}
         {(isAddingCard || editingCard) && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg p-6 max-w-md w-full">
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto">
+            <div className="bg-white rounded-lg p-4 sm:p-6 max-w-md w-full my-8 max-h-[90vh] overflow-y-auto">
               <h3 className="text-xl font-bold mb-4">{editingCard ? 'Edit Card' : 'Add New Card'}</h3>
               <form onSubmit={handleSaveCard} className="space-y-4">
                 <div>
