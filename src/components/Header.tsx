@@ -127,12 +127,12 @@ export default function Header() {
               className="flex-1 overflow-x-auto scrollbar-hide"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
-              <nav className="flex items-center gap-8 px-2">
+              <nav className="flex items-center gap-12 px-2">
                 {navLinks.map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`text-base font-semibold leading-normal whitespace-nowrap ${
+                    className={`text-lg font-bold leading-normal whitespace-nowrap ${
                       pathname === link.href
                         ? 'text-primary'
                         : 'text-text-light dark:text-text-dark hover:text-primary'
