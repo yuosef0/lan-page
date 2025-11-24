@@ -3,7 +3,7 @@ export default function GeometricBackground() {
     <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
       {/* Curved Lines Pattern - Top Right */}
       <svg
-        className="absolute top-[-50px] right-[-50px] w-[350px] h-[350px] opacity-15"
+        className="absolute top-[-30px] right-[-30px] w-[180px] h-[180px] md:top-[-50px] md:right-[-50px] md:w-[350px] md:h-[350px] opacity-10 md:opacity-15"
         viewBox="0 0 350 350"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -25,7 +25,7 @@ export default function GeometricBackground() {
 
       {/* Dotted Arc Pattern - Bottom Right */}
       <svg
-        className="absolute bottom-[-60px] right-[-60px] w-[320px] h-[320px] opacity-15"
+        className="absolute bottom-[-40px] right-[-40px] w-[160px] h-[160px] md:bottom-[-60px] md:right-[-60px] md:w-[320px] md:h-[320px] opacity-10 md:opacity-15"
         viewBox="0 0 320 320"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +55,7 @@ export default function GeometricBackground() {
 
       {/* Curved Lines Pattern - Top Left (mirrored) */}
       <svg
-        className="absolute top-[-50px] left-[-50px] w-[350px] h-[350px] opacity-15"
+        className="absolute top-[-30px] left-[-30px] w-[180px] h-[180px] md:top-[-50px] md:left-[-50px] md:w-[350px] md:h-[350px] opacity-10 md:opacity-15"
         viewBox="0 0 350 350"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -77,7 +77,7 @@ export default function GeometricBackground() {
 
       {/* Dotted Arc Pattern - Bottom Left (mirrored) */}
       <svg
-        className="absolute bottom-[-60px] left-[-60px] w-[320px] h-[320px] opacity-15"
+        className="absolute bottom-[-40px] left-[-40px] w-[160px] h-[160px] md:bottom-[-60px] md:left-[-60px] md:w-[320px] md:h-[320px] opacity-10 md:opacity-15"
         viewBox="0 0 320 320"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -107,7 +107,7 @@ export default function GeometricBackground() {
 
       {/* Additional Subtle Lines - Center */}
       <svg
-        className="absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] opacity-8"
+        className="absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 w-[300px] h-[200px] md:w-[600px] md:h-[400px] opacity-5 md:opacity-8"
         viewBox="0 0 600 400"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

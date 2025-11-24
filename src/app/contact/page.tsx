@@ -5,12 +5,18 @@ import ClientLayout from '@/components/ClientLayout';
 import { supabase } from '@/lib/supabase';
 import type { ContactInfo } from '@/types/database';
 
+interface Toast {
+  message: string;
+  type: 'success' | 'error';
+}
+
 export default function Contact() {
   const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [generalForm, setGeneralForm] = useState({ name: '', email: '', message: '' });
   const [vendorForm, setVendorForm] = useState({ companyName: '', contactPerson: '', email: '', phone: '' });
   const [submitting, setSubmitting] = useState(false);
+  const [toast, setToast] = useState<Toast | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,6 +26,15 @@ export default function Contact() {
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (toast) {
+      const timer = setTimeout(() => {
+        setToast(null);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [toast]);
 
   const handleGeneralSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,8 +46,10 @@ export default function Contact() {
     });
 
     if (!error) {
-      alert('Message sent successfully!');
+      setToast({ message: 'Message sent successfully!', type: 'success' });
       setGeneralForm({ name: '', email: '', message: '' });
+    } else {
+      setToast({ message: 'Error sending message', type: 'error' });
     }
     setSubmitting(false);
   };
@@ -50,8 +67,10 @@ export default function Contact() {
     });
 
     if (!error) {
-      alert('Inquiry submitted successfully!');
+      setToast({ message: 'Inquiry submitted successfully!', type: 'success' });
       setVendorForm({ companyName: '', contactPerson: '', email: '', phone: '' });
+    } else {
+      setToast({ message: 'Error submitting inquiry', type: 'error' });
     }
     setSubmitting(false);
   };
@@ -193,6 +212,24 @@ export default function Contact() {
           </div>
         </div>
       </section>
+
+      {/* Toast Notification */}
+      {toast && (
+        <div className="fixed top-4 right-4 z-[100] animate-slide-in">
+          <div className={`${toast.type === 'success' ? 'bg-green-500' : 'bg-red-500'} text-white px-6 py-4 rounded-lg shadow-lg flex items-center gap-3 min-w-[300px] max-w-md`}>
+            <span className="material-symbols-outlined text-2xl">
+              {toast.type === 'success' ? 'check_circle' : 'error'}
+            </span>
+            <p className="flex-1 font-medium">{toast.message}</p>
+            <button
+              onClick={() => setToast(null)}
+              className="hover:bg-white/20 rounded p-1 transition-colors"
+            >
+              <span className="material-symbols-outlined text-xl">close</span>
+            </button>
+          </div>
+        </div>
+      )}
     </ClientLayout>
   );
 }
