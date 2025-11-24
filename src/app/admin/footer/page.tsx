@@ -47,11 +47,11 @@ export default function FooterAdmin() {
       .eq('id', footerData.id);
 
     if (!error) {
-      setToast({ message: 'تم تحديث الفوتر بنجاح!', type: 'success' });
+      setToast({ message: 'Footer updated successfully!', type: 'success' });
       fetchData();
     } else {
       console.error('Error updating footer:', error);
-      setToast({ message: 'خطأ في التحديث: ' + error.message, type: 'error' });
+      setToast({ message: 'Error updating: ' + error.message, type: 'error' });
     }
     setSaving(false);
   };

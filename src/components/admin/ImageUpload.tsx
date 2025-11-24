@@ -30,13 +30,13 @@ export default function ImageUpload({
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      onError?.('الرجاء اختيار ملف صورة');
+      onError?.('Please select an image file');
       return;
     }
 
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
-      onError?.('حجم الملف يجب أن يكون أقل من 5 ميجابايت');
+      onError?.('File size must be less than 5MB');
       return;
     }
 
@@ -69,7 +69,7 @@ export default function ImageUpload({
 
       if (error) {
         console.error('Upload error:', error);
-        onError?.('خطأ في رفع الصورة: ' + error.message);
+        onError?.('Error uploading image: ' + error.message);
         return;
       }
 
@@ -79,10 +79,10 @@ export default function ImageUpload({
         .getPublicUrl(fileName);
 
       onImageUploaded(publicUrl);
-      onSuccess?.('تم رفع الصورة بنجاح!');
+      onSuccess?.('Image uploaded successfully!');
     } catch (error) {
       console.error('Upload error:', error);
-      onError?.('خطأ في رفع الصورة');
+      onError?.('Error uploading image');
     } finally {
       setUploading(false);
     }

@@ -44,12 +44,12 @@ export default function SettingsAdmin() {
       .eq('id', settings.id);
 
     if (!error) {
-      setToast({ message: 'تم تحديث الإعدادات بنجاح!', type: 'success' });
+      setToast({ message: 'Settings updated successfully!', type: 'success' });
       setLogoUrl('');
       fetchData();
     } else {
       console.error('Error updating settings:', error);
-      setToast({ message: 'خطأ في التحديث: ' + error.message, type: 'error' });
+      setToast({ message: 'Error updating: ' + error.message, type: 'error' });
     }
     setSaving(false);
   };
@@ -98,7 +98,7 @@ export default function SettingsAdmin() {
                 onSuccess={(msg) => setToast({ message: msg, type: 'success' })}
                 onError={(msg) => setToast({ message: msg, type: 'error' })}
               />
-              <p className="text-xs text-gray-500 mt-2">أو أدخل رابط اللوجو:</p>
+              <p className="text-xs text-gray-500 mt-2">Or enter logo URL:</p>
               <input
                 type="url"
                 name="logo_url"

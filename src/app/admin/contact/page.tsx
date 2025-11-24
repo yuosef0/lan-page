@@ -63,10 +63,10 @@ export default function ContactAdmin() {
       .eq('id', contactInfo.id);
 
     if (!error) {
-      setToast({ message: 'تم تحديث معلومات الاتصال بنجاح!', type: 'success' });
+      setToast({ message: 'Contact information updated successfully!', type: 'success' });
       fetchData();
     } else {
-      setToast({ message: 'خطأ في تحديث معلومات الاتصال', type: 'error' });
+      setToast({ message: 'Error updating contact information', type: 'error' });
     }
     setSaving(false);
   };
@@ -180,14 +180,14 @@ export default function ContactAdmin() {
                     className="w-full px-4 py-2 border rounded-lg font-mono text-sm"
                   />
                   <div className="text-xs text-gray-600 mt-2 space-y-1 bg-gray-50 p-3 rounded">
-                    <p className="font-medium">📍 كيفية إضافة الخريطة:</p>
+                    <p className="font-medium">📍 How to add the map:</p>
                     <ol className="list-decimal list-inside space-y-1 mr-4">
-                      <li>افتح Google Maps وابحث عن موقعك</li>
-                      <li>اضغط على "مشاركة" أو "Share"</li>
-                      <li>اختر "تضمين خريطة" أو "Embed a map"</li>
-                      <li>انسخ الكود كله والصقه هنا (أو انسخ الرابط من src فقط)</li>
+                      <li>Open Google Maps and search for your location</li>
+                      <li>Click "Share"</li>
+                      <li>Select "Embed a map"</li>
+                      <li>Copy the entire code and paste it here (or copy just the URL from src)</li>
                     </ol>
-                    <p className="text-green-600 mt-2">✓ يمكنك لصق الكود كامل، سيتم استخراج الرابط تلقائياً</p>
+                    <p className="text-green-600 mt-2">✓ You can paste the entire code, the URL will be extracted automatically</p>
                   </div>
                 </div>
               </div>

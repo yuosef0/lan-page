@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
 import Toast from '@/components/admin/Toast';
 import { supabase } from '@/lib/supabase';
+import * as XLSX from 'xlsx';
 
 interface ContactSubmission {
   id: string;
@@ -43,11 +44,67 @@ export default function SubmissionsAdmin() {
     const { error } = await supabase.from('contact_submissions').delete().eq('id', id);
 
     if (!error) {
-      setToast({ message: 'تم حذف الرسالة بنجاح!', type: 'success' });
+      setToast({ message: 'Message deleted successfully!', type: 'success' });
       fetchData();
     } else {
-      setToast({ message: 'خطأ في حذف الرسالة', type: 'error' });
+      setToast({ message: 'Error deleting message', type: 'error' });
     }
+  };
+
+  const handleExportToExcel = () => {
+    const dataToExport = filteredSubmissions.map((submission) => {
+      const baseData = {
+        'Type': submission.type === 'general' ? 'General Inquiry' : 'Vendor Inquiry',
+        'Date': new Date(submission.created_at).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        }),
+        'Email': submission.email,
+      };
+
+      if (submission.type === 'general') {
+        return {
+          ...baseData,
+          'Name': submission.name || '',
+          'Message': submission.message || '',
+          'Company': '',
+          'Contact Person': '',
+          'Phone': '',
+        };
+      } else {
+        return {
+          ...baseData,
+          'Name': '',
+          'Message': '',
+          'Company': submission.company_name || '',
+          'Contact Person': submission.contact_person || '',
+          'Phone': submission.phone || '',
+        };
+      }
+    });
+
+    const worksheet = XLSX.utils.json_to_sheet(dataToExport);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Contact Submissions');
+
+    // Auto-size columns
+    const maxWidth = 50;
+    const columnWidths = Object.keys(dataToExport[0] || {}).map((key) => {
+      const maxLength = Math.max(
+        key.length,
+        ...dataToExport.map((row) => String(row[key as keyof typeof row] || '').length)
+      );
+      return { wch: Math.min(maxLength + 2, maxWidth) };
+    });
+    worksheet['!cols'] = columnWidths;
+
+    const fileName = `contact_submissions_${new Date().toISOString().split('T')[0]}.xlsx`;
+    XLSX.writeFile(workbook, fileName);
+
+    setToast({ message: 'Excel file exported successfully!', type: 'success' });
   };
 
   const filteredSubmissions = submissions.filter((sub) => filter === 'all' || sub.type === filter);
@@ -77,31 +134,42 @@ export default function SubmissionsAdmin() {
           <p className="text-gray-600 mt-1">View and manage contact form submissions</p>
         </div>
 
-        {/* Filters */}
-        <div className="flex gap-3">
+        {/* Filters and Export */}
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex gap-3">
+            <button
+              onClick={() => setFilter('all')}
+              className={`px-4 py-2 rounded-lg ${
+                filter === 'all' ? 'bg-primary text-white' : 'bg-white border hover:bg-gray-50'
+              }`}
+            >
+              All ({submissions.length})
+            </button>
+            <button
+              onClick={() => setFilter('general')}
+              className={`px-4 py-2 rounded-lg ${
+                filter === 'general' ? 'bg-primary text-white' : 'bg-white border hover:bg-gray-50'
+              }`}
+            >
+              General ({submissions.filter((s) => s.type === 'general').length})
+            </button>
+            <button
+              onClick={() => setFilter('vendor')}
+              className={`px-4 py-2 rounded-lg ${
+                filter === 'vendor' ? 'bg-primary text-white' : 'bg-white border hover:bg-gray-50'
+              }`}
+            >
+              Vendor ({submissions.filter((s) => s.type === 'vendor').length})
+            </button>
+          </div>
+
           <button
-            onClick={() => setFilter('all')}
-            className={`px-4 py-2 rounded-lg ${
-              filter === 'all' ? 'bg-primary text-white' : 'bg-white border hover:bg-gray-50'
-            }`}
+            onClick={handleExportToExcel}
+            disabled={filteredSubmissions.length === 0}
+            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
           >
-            All ({submissions.length})
-          </button>
-          <button
-            onClick={() => setFilter('general')}
-            className={`px-4 py-2 rounded-lg ${
-              filter === 'general' ? 'bg-primary text-white' : 'bg-white border hover:bg-gray-50'
-            }`}
-          >
-            General ({submissions.filter((s) => s.type === 'general').length})
-          </button>
-          <button
-            onClick={() => setFilter('vendor')}
-            className={`px-4 py-2 rounded-lg ${
-              filter === 'vendor' ? 'bg-primary text-white' : 'bg-white border hover:bg-gray-50'
-            }`}
-          >
-            Vendor ({submissions.filter((s) => s.type === 'vendor').length})
+            <span className="material-symbols-outlined text-xl">download</span>
+            Export to Excel
           </button>
         </div>
 

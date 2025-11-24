@@ -49,14 +49,14 @@ export default function TeamAdmin() {
     }
 
     if (!error) {
-      setToast({ message: editingMember ? 'تم تحديث العضو بنجاح!' : 'تم إضافة العضو بنجاح!', type: 'success' });
+      setToast({ message: editingMember ? 'Team member updated successfully!' : 'Team member added successfully!', type: 'success' });
       setEditingMember(null);
       setIsAddingMember(false);
       setMemberImageUrl('');
       fetchData();
     } else {
       console.error('Error saving team member:', error);
-      setToast({ message: 'خطأ في حفظ العضو: ' + error.message, type: 'error' });
+      setToast({ message: 'Error saving team member: ' + error.message, type: 'error' });
     }
     setSaving(false);
   };
@@ -67,10 +67,10 @@ export default function TeamAdmin() {
     const { error } = await supabase.from('team_members').delete().eq('id', id);
 
     if (!error) {
-      setToast({ message: 'تم حذف العضو بنجاح!', type: 'success' });
+      setToast({ message: 'Team member deleted successfully!', type: 'success' });
       fetchData();
     } else {
-      setToast({ message: 'خطأ في حذف العضو', type: 'error' });
+      setToast({ message: 'Error deleting team member', type: 'error' });
     }
   };
 
@@ -177,7 +177,7 @@ export default function TeamAdmin() {
                     onImageUploaded={setMemberImageUrl}
                     folder="team"
                   />
-                  <p className="text-xs text-gray-500 mt-2">أو أدخل رابط الصورة:</p>
+                  <p className="text-xs text-gray-500 mt-2">Or enter image URL:</p>
                   <input
                     type="url"
                     name="image"

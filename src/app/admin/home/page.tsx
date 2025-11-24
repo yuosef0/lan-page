@@ -48,10 +48,10 @@ export default function HomeAdmin() {
       .eq('id', homeData.id);
 
     if (!error) {
-      setToast({ message: 'تم تحديث صفحة Home بنجاح!', type: 'success' });
+      setToast({ message: 'Home page updated successfully!', type: 'success' });
       fetchData();
     } else {
-      setToast({ message: 'خطأ في التحديث', type: 'error' });
+      setToast({ message: 'Error updating', type: 'error' });
     }
     setSaving(false);
   };
@@ -78,14 +78,14 @@ export default function HomeAdmin() {
     }
 
     if (!error) {
-      setToast({ message: editingCard ? 'تم تحديث الكارد بنجاح!' : 'تم إضافة الكارد بنجاح!', type: 'success' });
+      setToast({ message: editingCard ? 'Card updated successfully!' : 'Card added successfully!', type: 'success' });
       setEditingCard(null);
       setIsAddingCard(false);
       setCardImageUrl('');
       fetchData();
     } else {
       console.error('Error saving card:', error);
-      setToast({ message: 'خطأ في حفظ الكارد: ' + error.message, type: 'error' });
+      setToast({ message: 'Error saving card: ' + error.message, type: 'error' });
     }
     setSaving(false);
   };
@@ -96,10 +96,10 @@ export default function HomeAdmin() {
     const { error } = await supabase.from('feature_cards').delete().eq('id', id);
 
     if (!error) {
-      setToast({ message: 'تم حذف الكارد بنجاح!', type: 'success' });
+      setToast({ message: 'Card deleted successfully!', type: 'success' });
       fetchData();
     } else {
-      setToast({ message: 'خطأ في حذف الكارد', type: 'error' });
+      setToast({ message: 'Error deleting card', type: 'error' });
     }
   };
 
@@ -229,7 +229,7 @@ export default function HomeAdmin() {
                     onSuccess={(msg) => setToast({ message: msg, type: 'success' })}
                     onError={(msg) => setToast({ message: msg, type: 'error' })}
                   />
-                  <p className="text-xs text-gray-500 mt-2">أو أدخل رابط الصورة:</p>
+                  <p className="text-xs text-gray-500 mt-2">Or enter image URL:</p>
                   <input
                     type="url"
                     name="image"
