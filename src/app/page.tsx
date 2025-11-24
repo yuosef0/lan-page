@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import ClientLayout from '@/components/ClientLayout';
+import GeometricBackground from '@/components/GeometricBackground';
 import { supabase } from '@/lib/supabase';
 import type { HomePage, FeatureCard } from '@/types/database';
 
@@ -40,10 +41,7 @@ export default function Home() {
     <ClientLayout>
       {/* Hero Section */}
       <section className="relative py-20 px-4 text-center overflow-hidden bg-background-light dark:bg-background-dark">
-        <div className="absolute inset-0 z-0 opacity-20">
-          <div className="absolute top-[-50px] left-[-50px] size-40 border-4 border-primary rounded-full"></div>
-          <div className="absolute bottom-[-20px] right-[-30px] size-60 border-4 border-primary rounded-full"></div>
-        </div>
+        <GeometricBackground />
 
         <div className="relative z-10 container mx-auto max-w-7xl flex flex-col items-center gap-4">
           <h1 className="text-text-light dark:text-white text-4xl font-black leading-tight tracking-[-0.033em] md:text-5xl lg:text-6xl">
