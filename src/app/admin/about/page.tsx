@@ -59,12 +59,12 @@ export default function AboutAdmin() {
       .eq('id', aboutPage.id);
 
     if (!error) {
-      setToast({ message: 'تم تحديث صفحة About بنجاح!', type: 'success' });
+      setToast({ message: 'About page updated successfully!', type: 'success' });
       setMissionImageUrl('');
       fetchData();
     } else {
       console.error('Error updating about page:', error);
-      setToast({ message: 'خطأ في التحديث: ' + error.message, type: 'error' });
+      setToast({ message: 'Error updating: ' + error.message, type: 'error' });
     }
     setSaving(false);
   };
@@ -92,28 +92,28 @@ export default function AboutAdmin() {
 
     if (!error) {
       setToast({
-        message: editingPrinciple ? 'تم تحديث المبدأ بنجاح!' : 'تم إضافة المبدأ بنجاح!',
+        message: editingPrinciple ? 'Principle updated successfully!' : 'Principle added successfully!',
         type: 'success'
       });
       setEditingPrinciple(null);
       setIsAddingPrinciple(false);
       fetchData();
     } else {
-      setToast({ message: 'خطأ في حفظ المبدأ', type: 'error' });
+      setToast({ message: 'Error saving principle', type: 'error' });
     }
     setSaving(false);
   };
 
   const handleDeletePrinciple = async (id: string) => {
-    if (!confirm('هل أنت متأكد من حذف هذا المبدأ؟')) return;
+    if (!confirm('Are you sure you want to delete this principle?')) return;
 
     const { error } = await supabase.from('principles').delete().eq('id', id);
 
     if (!error) {
-      setToast({ message: 'تم حذف المبدأ بنجاح!', type: 'success' });
+      setToast({ message: 'Principle deleted successfully!', type: 'success' });
       fetchData();
     } else {
-      setToast({ message: 'خطأ في حذف المبدأ', type: 'error' });
+      setToast({ message: 'Error deleting principle', type: 'error' });
     }
   };
 
@@ -171,7 +171,7 @@ export default function AboutAdmin() {
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-bold">Mission Section</h3>
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <span className="text-sm font-medium">عرض في الموقع</span>
+                  <span className="text-sm font-medium">Show on site</span>
                   <div className="relative inline-block">
                     <input
                       type="checkbox"
@@ -213,7 +213,7 @@ export default function AboutAdmin() {
                     onSuccess={(msg) => setToast({ message: msg, type: 'success' })}
                     onError={(msg) => setToast({ message: msg, type: 'error' })}
                   />
-                  <p className="text-xs text-gray-500 mt-2">أو أدخل رابط الصورة:</p>
+                  <p className="text-xs text-gray-500 mt-2">Or enter image URL:</p>
                   <input
                     type="url"
                     name="mission_image"
@@ -230,7 +230,7 @@ export default function AboutAdmin() {
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-bold">Values Section</h3>
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <span className="text-sm font-medium">عرض في الموقع</span>
+                  <span className="text-sm font-medium">Show on site</span>
                   <div className="relative inline-block">
                     <input
                       type="checkbox"
@@ -271,7 +271,7 @@ export default function AboutAdmin() {
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-bold">Principles Section</h3>
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <span className="text-sm font-medium">عرض في الموقع</span>
+                  <span className="text-sm font-medium">Show on site</span>
                   <div className="relative inline-block">
                     <input
                       type="checkbox"
@@ -300,7 +300,7 @@ export default function AboutAdmin() {
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-bold">Team Section</h3>
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <span className="text-sm font-medium">عرض في الموقع</span>
+                  <span className="text-sm font-medium">Show on site</span>
                   <div className="relative inline-block">
                     <input
                       type="checkbox"

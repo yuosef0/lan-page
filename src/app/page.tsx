@@ -44,7 +44,7 @@ export default function Home() {
         <GeometricBackground />
 
         <div className="relative z-10 container mx-auto max-w-7xl flex flex-col items-center gap-4">
-          <h1 className="text-text-light dark:text-white text-4xl font-black leading-tight tracking-[-0.033em] md:text-5xl lg:text-6xl">
+          <h1 className="text-primary text-4xl font-black leading-tight tracking-[-0.033em] md:text-5xl lg:text-6xl">
             {homeData?.hero_title || 'Beyond Construction'}
           </h1>
           <p className="text-text-light dark:text-gray-300 text-base font-normal leading-normal md:text-lg max-w-2xl">

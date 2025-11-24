@@ -50,12 +50,12 @@ export default function ServicesAdmin() {
       .eq('id', servicesPage.id);
 
     if (!error) {
-      setToast({ message: 'تم تحديث قسم البطل بنجاح!', type: 'success' });
+      setToast({ message: 'Hero section updated successfully!', type: 'success' });
       setHeroImageUrl('');
       fetchData();
     } else {
       console.error('Error updating hero section:', error);
-      setToast({ message: 'خطأ في تحديث قسم البطل: ' + error.message, type: 'error' });
+      setToast({ message: 'Error updating hero section: ' + error.message, type: 'error' });
     }
     setSaving(false);
   };
@@ -84,14 +84,14 @@ export default function ServicesAdmin() {
     }
 
     if (!error) {
-      setToast({ message: editingService ? 'تم تحديث الخدمة بنجاح!' : 'تم إضافة الخدمة بنجاح!', type: 'success' });
+      setToast({ message: editingService ? 'Service updated successfully!' : 'Service added successfully!', type: 'success' });
       setEditingService(null);
       setIsAddingService(false);
       setServiceImageUrl('');
       fetchData();
     } else {
       console.error('Error saving service:', error);
-      setToast({ message: 'خطأ في حفظ الخدمة: ' + error.message, type: 'error' });
+      setToast({ message: 'Error saving service: ' + error.message, type: 'error' });
     }
     setSaving(false);
   };
@@ -102,10 +102,10 @@ export default function ServicesAdmin() {
     const { error } = await supabase.from('services').delete().eq('id', id);
 
     if (!error) {
-      setToast({ message: 'تم حذف الخدمة بنجاح!', type: 'success' });
+      setToast({ message: 'Service deleted successfully!', type: 'success' });
       fetchData();
     } else {
-      setToast({ message: 'خطأ في حذف الخدمة', type: 'error' });
+      setToast({ message: 'Error deleting service', type: 'error' });
     }
   };
 
@@ -176,7 +176,7 @@ export default function ServicesAdmin() {
                 onImageUploaded={setHeroImageUrl}
                 folder="services"
               />
-              <p className="text-xs text-gray-500 mt-2">أو أدخل رابط الصورة:</p>
+              <p className="text-xs text-gray-500 mt-2">Or enter image URL:</p>
               <input
                 type="url"
                 name="hero_image"
@@ -290,7 +290,7 @@ export default function ServicesAdmin() {
                     onImageUploaded={setServiceImageUrl}
                     folder="services"
                   />
-                  <p className="text-xs text-gray-500 mt-2">أو أدخل رابط الصورة:</p>
+                  <p className="text-xs text-gray-500 mt-2">Or enter image URL:</p>
                   <input
                     type="url"
                     name="image"
