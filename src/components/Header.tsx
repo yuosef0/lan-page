@@ -37,7 +37,7 @@ export default function Header() {
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-4">
+          <Link href="/" className="flex items-center gap-2 sm:gap-4">
             {siteSettings?.logo_url ? (
               <div className="relative h-10 w-10 flex-shrink-0">
                 <Image
@@ -48,11 +48,11 @@ export default function Header() {
                 />
               </div>
             ) : (
-              <div className="size-8 flex-shrink-0 bg-primary text-white rounded-md flex items-center justify-center font-black text-xl">
+              <div className="size-10 flex-shrink-0 bg-primary text-white rounded-md flex items-center justify-center font-black text-xl">
                 AB
               </div>
             )}
-            <h2 className="text-text-light dark:text-text-dark text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">
+            <h2 className="text-text-light dark:text-text-dark text-sm sm:text-lg font-bold leading-tight tracking-[-0.015em]">
               {siteSettings?.site_name || 'Apex & Base'}
             </h2>
           </Link>
